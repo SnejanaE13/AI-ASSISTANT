@@ -1,0 +1,209 @@
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+}
+
+.registration-container {
+    background: white;
+    padding: 40px;
+    border-radius: 15px;
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
+    width: 100%;
+    max-width: 450px;
+}
+
+.registration-header {
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+.registration-header h1 {
+    color: #333;
+    font-size: 28px;
+    margin-bottom: 10px;
+}
+
+.registration-header p {
+    color: #666;
+    font-size: 14px;
+}
+
+.form-group {
+    margin-bottom: 20px;
+}
+
+label {
+    display: block;
+    margin-bottom: 8px;
+    color: #333;
+    font-weight: 500;
+}
+
+input {
+    width: 100%;
+    padding: 12px 15px;
+    border: 2px solid #e1e1e1;
+    border-radius: 8px;
+    font-size: 16px;
+    transition: border-color 0.3s;
+}
+
+input:focus {
+    outline: none;
+    border-color: #667eea;
+}
+
+.submit-btn {
+    width: 100%;
+    padding: 14px;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: transform 0.2s;
+}
+
+.submit-btn:hover {
+    transform: translateY(-2px);
+}
+
+.login-link {
+    text-align: center;
+    margin-top: 20px;
+    color: #666;
+}
+
+.login-link a {
+    color: #667eea;
+    text-decoration: none;
+}
+
+.login-link a:hover {
+    text-decoration: underline;
+}
+
+/* Стили для выпадающего списка */
+select {
+    width: 100%;
+    padding: 12px 15px;
+    border: 2px solid #e1e1e1;
+    border-radius: 8px;
+    font-size: 16px;
+    background: white;
+    cursor: pointer;
+    color: #333;
+    appearance: none; /* Убираем стандартный стиль браузера */
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' fill='%23666' viewBox='0 0 16 16'%3E%3Cpath d='M7.247 11.14 2.451 5.658C1.885 5.013 2.345 4 3.204 4h9.592a1 1 0 0 1 .753 1.659l-4.796 5.48a1 1 0 0 1-1.506 0z'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 15px center;
+    background-size: 12px;
+}
+
+select:focus {
+    outline: none;
+    border-color: #667eea;
+}
+
+select:invalid {
+    color: #999;
+}
+
+select option {
+    color: #333;
+    padding: 10px;
+}
+/* Добавьте в конец css/style.css */
+
+/* Планшеты и маленькие ноутбуки */
+@media (max-width: 1024px) {
+    .registration-container {
+        max-width: 400px;
+        padding: 30px;
+    }
+}
+
+/* Мобильные устройства */
+@media (max-width: 768px) {
+    body {
+        padding: 15px;
+    }
+    
+    .registration-container {
+        padding: 25px 20px;
+        max-width: 100%;
+    }
+    
+    .registration-header h1 {
+        font-size: 24px;
+    }
+    
+    input, select {
+        padding: 10px 12px;
+        font-size: 16px; /* Важно для iOS */
+    }
+}
+
+/* Маленькие телефоны */
+@media (max-width: 480px) {
+    body {
+        padding: 10px;
+    }
+    
+    .registration-container {
+        padding: 20px 15px;
+    }
+    
+    .registration-header h1 {
+        font-size: 22px;
+    }
+    
+    .form-group {
+        margin-bottom: 15px;
+    }
+}
+/* Адаптивность для страницы авторизации */
+@media (max-width: 1024px) {
+    .login-container {
+        max-width: 400px;
+        padding: 30px;
+    }
+}
+
+@media (max-width: 768px) {
+    .login-container {
+        padding: 25px 20px;
+        max-width: 100%;
+    }
+    
+    .login-header h1 {
+        font-size: 24px;
+    }
+}
+
+@media (max-width: 480px) {
+    .login-container {
+        padding: 20px 15px;
+    }
+    
+    .login-header h1 {
+        font-size: 22px;
+    }
+    
+    .login-header p {
+        font-size: 13px;
+    }
+}
