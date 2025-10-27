@@ -1,0 +1,1276 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ultron - Интеллектуальный помощник изучения языков</title>
+    <link rel="stylesheet" href="css/main-interface.css">
+</head>
+<body>
+
+    <!-- Основной интерфейс (изначально скрыт) -->
+    <div style="display: none;" id="app-interface">
+        <!-- Floating particles background -->
+        <div class="particles" id="particles"></div>
+
+        <div class="container">
+            <header class="header">
+                <div class="logo">
+                    🧠 Ultron Assistant
+                </div>
+                <div class="user-selector" id="user-switcher" style="display: none;">
+                    <button class="user-btn active" onclick="switchUser('student')">👨‍🎓 Студент</button>
+                    <button class="user-btn" onclick="switchUser('teacher')">👩‍🏫 Преподаватель</button>
+                </div>
+                <button class="btn btn-secondary" onclick="logout()" style="margin-left: 16px;">Выйти</button>
+            </header>
+
+            <!-- Интерфейс для студента -->
+            <div id="student-interface" class="interface-container active">
+                <!-- Навигация студента -->
+                <nav class="navigation">
+                    <div class="nav-item active" onclick="switchScreen('student', 'dashboard', event)">🏠 Главная</div>
+                    <div class="nav-item" onclick="switchScreen('student', 'learning', event)">📚 Обучение</div>
+                    <div class="nav-item" onclick="switchScreen('student', 'progress', event)">📊 Прогресс</div>
+                    <div class="nav-item" onclick="switchScreen('student', 'assignments', event)">📝 Задания</div>
+                    <div class="nav-item" onclick="switchScreen('student', 'analysis', event)">🔍 Анализ</div>
+                    <div class="nav-item" onclick="switchScreen('student', 'schedule', event)">⏰ Расписание</div>
+                    <div class="nav-item" onclick="switchScreen('student', 'assistant', event)">🤖 Ассистент</div>
+                </nav>
+
+                <!-- Главная панель студента -->
+                <div id="student-dashboard" class="screen active">
+                    <div class="dashboard">
+                        <!-- Уровень владения языком -->
+                        <div class="card">
+                            <div class="card-header">
+                                <div class="card-icon">🎯</div>
+                                <div>
+                                    <div class="card-title">Уровень владения</div>
+                                    <div class="card-subtitle">Английский язык</div>
+                                </div>
+                            </div>
+                            <div class="level-indicator">
+                                📈 B2 - Upper Intermediate
+                            </div>
+                            <div class="progress-section">
+                                <div class="progress-header">
+                                    <span>Прогресс до C1</span>
+                                    <span>73%</span>
+                                </div>
+                                <div class="progress-bar">
+                                    <div class="progress-fill" style="width: 73%;"></div>
+                                </div>
+                            </div>
+                            <div class="stats-grid">
+                                <div class="stat-item">
+                                    <div class="stat-number">87</div>
+                                    <div class="stat-label">Грамматика</div>
+                                </div>
+                                <div class="stat-item">
+                                    <div class="stat-number">81</div>
+                                    <div class="stat-label">Лексика</div>
+                                </div>
+                                <div class="stat-item">
+                                    <div class="stat-number">92</div>
+                                    <div class="stat-label">Произношение</div>
+                                </div>
+                                <div class="stat-item">
+                                    <div class="stat-number">76</div>
+                                    <div class="stat-label">Аудирование</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Рекомендации по обучению -->
+                        <div class="card">
+                            <div class="card-header">
+                                <div class="card-icon">✨</div>
+                                <div>
+                                    <div class="card-title">Персональные рекомендации</div>
+                                    <div class="card-subtitle">На основе вашего прогресса</div>
+                                </div>
+                            </div>
+                            <ul class="feature-list">
+                                <li class="feature-item">
+                                    <div class="feature-text">Повторите времена Perfect</div>
+                                    <div class="status-badge status-warning">Важно</div>
+                                </li>
+                                <li class="feature-item">
+                                    <div class="feature-text">Пополните словарный запас в теме "Технологии"</div>
+                                    <div class="status-badge status-pending">Рекомендуем</div>
+                                </li>
+                                <li class="feature-item">
+                                    <div class="feature-text">Практика аудирования - TED Talk о науке</div>
+                                    <div class="status-badge status-active">Новое</div>
+                                </li>
+                                <li class="feature-item">
+                                    <div class="feature-text">Разговорная практика с носителем</div>
+                                    <div class="status-badge status-completed">Запланировано</div>
+                                </li>
+                            </ul>
+                            <button class="btn" style="margin-top: 24px; width: 100%;">
+                                Сгенерировать индивидуальный план
+                            </button>
+                        </div>
+
+                        <!-- Ближайшие задания -->
+                        <div class="card">
+                            <div class="card-header">
+                                <div class="card-icon">⏳</div>
+                                <div>
+                                    <div class="card-title">Ближайшие задания</div>
+                                    <div class="card-subtitle">Сроки выполнения</div>
+                                </div>
+                            </div>
+                            <div class="schedule-item">
+                                <div class="schedule-time">Сегодня, 18:00</div>
+                                <div class="schedule-title">Эссе на тему "Искусственный интеллект"</div>
+                                <div class="schedule-desc">Минимум 300 слов, использование пассивного залога</div>
+                            </div>
+                            <div class="schedule-item">
+                                <div class="schedule-time">Завтра, 09:00</div>
+                                <div class="schedule-title">Тест по грамматике</div>
+                                <div class="schedule-desc">Времена Perfect, 20 вопросов</div>
+                            </div>
+                            <div class="schedule-item">
+                                <div class="schedule-time">15.06.2023</div>
+                                <div class="schedule-title">Проект: Презентация</div>
+                                <div class="schedule-desc">Подготовить 10 слайдов о своей стране</div>
+                            </div>
+                            <button class="btn btn-secondary" style="margin-top: 24px; width: 100%;">
+                                Показать все задания
+                            </button>
+                        </div>
+
+                        <!-- Статистика обучения -->
+                        <div class="card">
+                            <div class="card-header">
+                                <div class="card-icon">📊</div>
+                                <div>
+                                    <div class="card-title">Статистика обучения</div>
+                                    <div class="card-subtitle">За последнюю неделю</div>
+                                </div>
+                            </div>
+                            <div class="stats-grid">
+                                <div class="stat-item">
+                                    <div class="stat-number">12</div>
+                                    <div class="stat-label">Часов обучения</div>
+                                </div>
+                                <div class="stat-item">
+                                    <div class="stat-number">156</div>
+                                    <div class="stat-label">Новых слов</div>
+                                </div>
+                                <div class="stat-item">
+                                    <div class="stat-number">8</div>
+                                    <div class="stat-label">Пройдено уроков</div>
+                                </div>
+                                <div class="stat-item">
+                                    <div class="stat-number">92%</div>
+                                    <div class="stat-label">Регулярность</div>
+                                </div>
+                            </div>
+                            <div class="progress-section">
+                                <div class="progress-header">
+                                    <span>Цель недели</span>
+                                    <span>85%</span>
+                                </div>
+                                <div class="progress-bar">
+                                    <div class="progress-fill" style="width: 85%;"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Экран обучения -->
+                <div id="student-learning" class="screen">
+                    <div class="card">
+                        <div class="card-header">
+                            <div class="card-icon">📚</div>
+                            <div>
+                                <div class="card-title">Персональная программа обучения</div>
+                                <div class="card-subtitle">Английский язык - уровень B2</div>
+                            </div>
+                        </div>
+                        <div class="card" style="margin-top: 32px;">
+                            <div class="card-header">
+                                <div class="card-icon">🎧</div>
+                                <div>
+                                    <div class="card-title">Суммаризация видео и аудио</div>
+                                    <div class="card-subtitle">Загрузите медиафайл для автоматического резюме</div>
+                                </div>
+                            </div>
+                            <div class="file-upload" style="margin-top: 16px;">
+                                <div class="card-icon">🎬</div>
+                                <input type="file" id="upload-video" accept="video/*" style="margin-top: 16px; background: white; color: black; padding: 10px; border-radius: 8px;">
+                                <div class="file-upload-text">Загрузите видеофайл</div>
+                            </div>
+                            <div class="file-upload" style="margin-top: 16px;">
+                                <div class="card-icon">🎵</div>
+                                <input type="file" id="upload-audio" accept="audio/*" style="margin-top: 16px; background: white; color: black; padding: 10px; border-radius: 8px;">
+                                <div class="file-upload-text">Загрузите аудиофайл</div>
+                            </div>
+                        </div>
+                        <div class="analysis-card">
+                            <div class="analysis-result">
+                                <div class="result-label">Текущий модуль</div>
+                                <div class="result-value">Деловой английский</div>
+                            </div>
+                            <div class="analysis-result">
+                                <div class="result-label">Прогресс модуля</div>
+                                <div class="result-value">64%</div>
+                            </div>
+                            <div class="analysis-result">
+                                <div class="result-label">Следующая тема</div>
+                                <div class="result-value">Проведение презентаций</div>
+                            </div>
+                        </div>
+                        
+                        <h3 style="color: white; margin: 24px 0 16px; font-size: 20px;">Доступные уроки</h3>
+                        
+                        <div class="feature-list">
+                            <li class="feature-item">
+                                <div class="feature-text">1. Основы деловой переписки</div>
+                                <div class="status-badge status-completed">Завершено</div>
+                            </li>
+                            <li class="feature-item">
+                                <div class="feature-text">2. Проведение телефонных переговоров</div>
+                                <div class="status-badge status-completed">Завершено</div>
+                            </li>
+                            <li class="feature-item">
+                                <div class="feature-text">3. Участие в совещаниях</div>
+                                <div class="status-badge status-active">В процессе</div>
+                            </li>
+                            <li class="feature-item">
+                                <div class="feature-text">4. Проведение презентаций</div>
+                                <div class="status-badge status-pending">Доступно</div>
+                            </li>
+                            <li class="feature-item">
+                                <div class="feature-text">5. Переговоры и убеждение</div>
+                                <div class="status-badge status-pending">Блокировано</div>
+                            </li>
+                        </div>
+                        
+                        <button class="btn" style="margin-top: 24px; width: 100%;">
+                            Начать следующий урок
+                        </button>
+                    </div>
+                    
+                    <div class="card" style="margin-top: 32px;">
+                        <div class="card-header">
+                            <div class="card-icon">🎧</div>
+                            <div>
+                                <div class="card-title">Рекомендуемые материалы</div>
+                                <div class="card-subtitle">Подобрано по вашим интересам</div>
+                            </div>
+                        </div>
+                        
+                        <div class="quick-actions" style="margin-top: 20px;">
+                            <div class="quick-action">TED Talk: Будущее технологий</div>
+                            <div class="quick-action">Подкаст: Бизнес-новости</div>
+                            <div class="quick-action">Статья: Искусственный интеллект</div>
+                            <div class="quick-action">Видео: Английский для IT</div>
+                            <div class="quick-action">Книга: Бизнес-этикет</div>
+                        </div>
+                        
+                        <div class="file-upload" style="margin-top: 24px;">
+                            <div class="card-icon">📁</div>
+                            <div class="file-upload-text">Перетащите сюда файл для анализа или нажмите для загрузки</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Экран прогресса -->
+                <div id="student-progress" class="screen">
+                    <div class="card">
+                        <div class="card-header">
+                            <div class="card-icon">📈</div>
+                            <div>
+                                <div class="card-title">Детальная статистика</div>
+                                <div class="card-subtitle">Ваш прогресс за последние 3 месяца</div>
+                            </div>
+                        </div>
+                        
+                        <div class="analysis-card">
+                            <div class="analysis-result">
+                                <div class="result-label">Общий прогресс</div>
+                                <div class="result-value">+24%</div>
+                            </div>
+                            <div class="analysis-result">
+                                <div class="result-label">Активность</div>
+                                <div class="result-value">18/30 дней</div>
+                            </div>
+                            <div class="analysis-result">
+                                <div class="result-label">Завершено заданий</div>
+                                <div class="result-value">37 из 52</div>
+                            </div>
+                            <div class="analysis-result">
+                                <div class="result-label">Средняя оценка</div>
+                                <div class="result-value">8.4/10</div>
+                            </div>
+                        </div>
+                        
+                        <h3 style="color: white; margin: 24px 0 16px; font-size: 20px;">График прогресса</h3>
+                        <div style="background: rgba(255,255,255,0.1); border-radius: 16px; height: 300px; display: flex; align-items: center; justify-content: center; color: rgba(255,255,255,0.7);">
+                            [График прогресса будет здесь]
+                        </div>
+                        
+                        <div class="stats-grid" style="margin-top: 24px;">
+                            <div class="stat-item">
+                                <div class="stat-number">92%</div>
+                                <div class="stat-label">Регулярность</div>
+                            </div>
+                            <div class="stat-item">
+                                <div class="stat-number">87%</div>
+                                <div class="stat-label">Грамматика</div>
+                            </div>
+                            <div class="stat-item">
+                                <div class="stat-number">81%</div>
+                                <div class="stat-label">Лексика</div>
+                            </div>
+                            <div class="stat-item">
+                                <div class="stat-number">76%</div>
+                                <div class="stat-label">Аудирование</div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="card" style="margin-top: 32px;">
+                        <div class="card-header">
+                            <div class="card-icon">🏆</div>
+                            <div>
+                                <div class="card-title">Достижения</div>
+                                <div class="card-subtitle">Ваши успехи в обучении</div>
+                            </div>
+                        </div>
+                        
+                        <div class="stats-grid">
+                            <div class="stat-item">
+                                <div class="stat-number">5</div>
+                                <div class="stat-label">Дней подряд</div>
+                            </div>
+                            <div class="stat-item">
+                                <div class="stat-number">12</div>
+                                <div class="stat-label">Пройдено тем</div>
+                            </div>
+                            <div class="stat-item">
+                                <div class="stat-number">3</div>
+                                <div class="stat-label">Медалей</div>
+                            </div>
+                            <div class="stat-item">
+                                <div class="stat-number">87%</div>
+                                <div class="stat-label">Эффективность</div>
+                            </div>
+                        </div>
+                        
+                        <button class="btn btn-secondary" style="margin-top: 24px; width: 100%;">
+                            Поделиться прогрессом
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Экран заданий -->
+                <div id="student-assignments" class="screen">
+                    <div class="card">
+                        <div class="card-header">
+                            <div class="card-icon">📝</div>
+                            <div>
+                                <div class="card-title">Текущие задания</div>
+                                <div class="card-subtitle">Список активных задач</div>
+                            </div>
+                        </div>
+                        
+                        <div class="feature-list">
+                            <li class="feature-item">
+                                <div>
+                                    <div class="feature-text">Эссе на тему "Искусственный интеллект"</div>
+                                    <div class="schedule-desc">Срок: сегодня, 18:00 | Статус: в процессе</div>
+                                </div>
+                                <div class="status-badge status-warning">Срочно</div>
+                            </li>
+                            <li class="feature-item">
+                                <div>
+                                    <div class="feature-text">Тест по грамматике (Perfect Tenses)</div>
+                                    <div class="schedule-desc">Срок: завтра, 09:00 | Статус: не начато</div>
+                                </div>
+                                <div class="status-badge status-pending">Ожидает</div>
+                            </li>
+                            <li class="feature-item">
+                                <div>
+                                    <div class="feature-text">Проект: Презентация о своей стране</div>
+                                    <div class="schedule-desc">Срок: 15.06.2023 | Статус: планирование</div>
+                                </div>
+                                <div class="status-badge status-pending">В плане</div>
+                            </li>
+                            <li class="feature-item">
+                                <div>
+                                    <div class="feature-text">Чтение статьи + обсуждение</div>
+                                    <div class="schedule-desc">Срок: 18.06.2023 | Статус: не начато</div>
+                                </div>
+                                <div class="status-badge status-pending">Ожидает</div>
+                            </li>
+                        </div>
+                        
+                        <button class="btn" style="margin-top: 24px; width: 100%;">
+                            Добавить новое задание
+                        </button>
+                    </div>
+                    
+                    <div class="card" style="margin-top: 32px;">
+                        <div class="card-header">
+                            <div class="card-icon">✅</div>
+                            <div>
+                                <div class="card-title">Завершенные задания</div>
+                                <div class="card-subtitle">История выполненных работ</div>
+                            </div>
+                        </div>
+                        
+                        <div class="feature-list">
+                            <li class="feature-item">
+                                <div>
+                                    <div class="feature-text">Диалог на тему "Путешествия"</div>
+                                    <div class="schedule-desc">Оценка: 9/10 | Дата: 01.06.2023</div>
+                                </div>
+                                <div class="status-badge status-completed">Проверено</div>
+                            </li>
+                            <li class="feature-item">
+                                <div>
+                                    <div class="feature-text">Тест по лексике Unit 5</div>
+                                    <div class="schedule-desc">Оценка: 8/10 | Дата: 28.05.2023</div>
+                                </div>
+                                <div class="status-badge status-completed">Проверено</div>
+                            </li>
+                            <li class="feature-item">
+                                <div>
+                                    <div class="feature-text">Письменное задание: Formal Email</div>
+                                    <div class="schedule-desc">Оценка: 10/10 | Дата: 25.05.2023</div>
+                                </div>
+                                <div class="status-badge status-completed">Проверено</div>
+                            </li>
+                        </div>
+                        
+                        <button class="btn btn-secondary" style="margin-top: 24px; width: 100%;">
+                            Показать все (24)
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Экран анализа -->
+                <div id="student-analysis" class="screen">
+                    <div class="card">
+                        <div class="card-header">
+                            <div class="card-icon">🔍</div>
+                            <div>
+                                <div class="card-title">Анализ текста</div>
+                                <div class="card-subtitle">Проверка грамматики, стиля и уникальности</div>
+                            </div>
+                        </div>
+                        
+                        <div class="file-upload">
+                            <input type="file" id="upload-text" accept=".txt,.docx,.pdf" style="margin-top: 16px; background: white; color: black; padding: 10px; border-radius: 8px;">
+                            <div class="card-icon">📄</div>
+                            <div class="file-upload-text">Перетащите сюда текстовый файл или нажмите для загрузки</div>
+                        </div>
+                        
+                        <div class="quick-actions" style="margin-top: 20px;">
+                            <div class="quick-action">Проверить грамматику</div>
+                            <div class="quick-action">Анализ стиля</div>
+                            <div class="quick-action">Проверка на плагиат</div>
+                            <div class="quick-action">Оценка сложности</div>
+                        </div>
+                        
+                        <div class="analysis-card" style="margin-top: 24px; display: none;" id="analysis-result">
+                            <div class="analysis-result">
+                                <div class="result-label">Уровень языка</div>
+                                <div class="result-value">B2 (Upper Intermediate)</div>
+                            </div>
+                            <div class="analysis-result">
+                                <div class="result-label">Грамматические ошибки</div>
+                                <div class="result-value">4 (2 критических)</div>
+                            </div>
+                            <div class="analysis-result">
+                                <div class="result-label">Лексическое разнообразие</div>
+                                <div class="result-value">7.8/10</div>
+                            </div>
+                            <div class="analysis-result">
+                                <div class="result-label">Уникальность текста</div>
+                                <div class="result-value">94%</div>
+                            </div>
+                            <div class="analysis-result">
+                                <div class="result-label">Общая оценка</div>
+                                <div class="result-value">8.2/10</div>
+                            </div>
+                        </div>
+                        
+                        <button class="btn" style="margin-top: 24px; width: 100%; display: none;" id="show-details-btn">
+                            Показать детальный отчет
+                        </button>
+                    </div>
+                    
+                    <div class="card" style="margin-top: 32px;">
+                        <div class="card-header">
+                            <div class="card-icon">🎤</div>
+                            <div>
+                                <div class="card-title">Анализ речи</div>
+                                <div class="card-subtitle">Проверка произношения и беглости</div>
+                            </div>
+                        </div>
+                        
+                        <div style="text-align: center; padding: 40px 20px;">
+                            <div style="width: 120px; height: 120px; background: rgba(255,255,255,0.1); border-radius: 50%; margin: 0 auto 20px; display: flex; align-items: center; justify-content: center; font-size: 36px;">
+                                🎤
+                            </div>
+                            <div style="color: rgba(255,255,255,0.8); margin-bottom: 24px;">
+                                Нажмите на микрофон, чтобы начать запись вашей речи
+                            </div>
+                            <button class="btn" style="width: 200px;">
+                                Начать запись
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Экран расписания -->
+                <div id="student-schedule" class="screen">
+                    <div class="card">
+                        <div class="card-header">
+                            <div class="card-icon">⏰</div>
+                            <div>
+                                <div class="card-title">Расписание занятий</div>
+                                <div class="card-subtitle">Предстоящие уроки и мероприятия</div>
+                            </div>
+                        </div>
+                        
+                        <div class="schedule-item">
+                            <div class="schedule-time">Сегодня, 14:00 - 15:30</div>
+                            <div class="schedule-title">Грамматика: Perfect Tenses</div>
+                            <div class="schedule-desc">Преподаватель: Анна Петрова | Кабинет: 304</div>
+                        </div>
+                        <div class="schedule-item">
+                            <div class="schedule-time">Завтра, 10:00 - 11:30</div>
+                            <div class="schedule-title">Разговорная практика</div>
+                            <div class="schedule-desc">Преподаватель: John Smith | Онлайн</div>
+                        </div>
+                        <div class="schedule-item">
+                            <div class="schedule-time">Среда, 16:00 - 17:30</div>
+                            <div class="schedule-title">Деловой английский</div>
+                            <div class="schedule-desc">Преподаватель: Мария Иванова | Кабинет: 201</div>
+                        </div>
+                        <div class="schedule-item">
+                            <div class="schedule-time">Пятница, 12:00 - 13:30</div>
+                            <div class="schedule-title">Подготовка к экзамену</div>
+                            <div class="schedule-desc">Преподаватель: Анна Петрова | Кабинет: 304</div>
+                        </div>
+                        
+                        <button class="btn" style="margin-top: 24px; width: 100%;">
+                            Добавить в календарь
+                        </button>
+                    </div>
+                    
+                    <div class="card" style="margin-top: 32px;">
+                        <div class="card-header">
+                            <div class="card-icon">📅</div>
+                            <div>
+                                <div class="card-title">Планировщик занятий</div>
+                                <div class="card-subtitle">Создайте свое расписание</div>
+                            </div>
+                        </div>
+                        
+                        <div style="background: rgba(255,255,255,0.1); border-radius: 16px; height: 300px; display: flex; align-items: center; justify-content: center; color: rgba(255,255,255,0.7);">
+                            [Календарь планирования будет здесь]
+                        </div>
+                        
+                        <div class="quick-actions" style="margin-top: 20px;">
+                            <div class="quick-action">Автопланирование</div>
+                            <div class="quick-action">Рекомендовать время</div>
+                            <div class="quick-action">Импорт расписания</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Экран ассистента -->
+                <div id="student-assistant" class="screen">
+                    <div class="chat-interface">
+                        <div class="chat-header">
+                            <div class="card-icon">🤖</div>
+                            <div class="chat-title">Ultron Assistant</div>
+                        </div>
+                        <div class="chat-messages" id="chat-messages">
+                            <div class="message ai">
+                                Привет! Я твой помощник в изучении английского. Чем могу помочь сегодня?
+                            </div>
+                            <div class="message user">
+                                Мне нужно подготовиться к тесту по временам Perfect.
+                            </div>
+                            <div class="message ai">
+                                Отлично! Давай начнём с краткого повторения. Present Perfect используется для действий, которые произошли в неопределённое время в прошлом или имеют связь с настоящим. Пример: "I have visited London three times."
+                            </div>
+                        </div>
+                        <div class="chat-input-container">
+                            <input type="text" class="chat-input" placeholder="Напишите ваш вопрос...">
+                            <button class="btn">Отправить</button>
+                        </div>
+                        <div class="quick-actions">
+                            <div class="quick-action">Объясни грамматику</div>
+                            <div class="quick-action">Проверь моё произношение</div>
+                            <div class="quick-action">Давай попрактикуем диалог</div>
+                            <div class="quick-action">Помоги с домашним заданием</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Интерфейс для преподавателя -->
+            <div id="teacher-interface" class="interface-container">
+                <!-- Навигация преподавателя -->
+                <nav class="navigation">
+                    <div class="nav-item active" onclick="switchScreen('teacher', 'dashboard', event)">🏠 Главная</div>
+                    <div class="nav-item" onclick="switchScreen('teacher', 'students', event)">👥 Студенты</div>
+                    <div class="nav-item" onclick="switchScreen('teacher', 'assignments', event)">📝 Задания</div>
+                    <div class="nav-item" onclick="switchScreen('teacher', 'analysis', event)">📊 Аналитика</div>
+                    <div class="nav-item" onclick="switchScreen('teacher', 'content', event)">📚 Контент</div>
+                    <div class="nav-item" onclick="switchScreen('teacher', 'schedule', event)">⏰ Расписание</div>
+                    <div class="nav-item" onclick="switchScreen('teacher', 'assistant', event)">🤖 Ассистент</div>
+                </nav>
+
+                <!-- Главная панель преподавателя -->
+                <div id="teacher-dashboard" class="screen active">
+                    <div class="dashboard">
+                        <!-- Обзор класса -->
+                        <div class="card">
+                            <div class="card-header">
+                                <div class="card-icon">👥</div>
+                                <div>
+                                    <div class="card-title">Мои студенты</div>
+                                    <div class="card-subtitle">Группа B2-3 - Английский язык</div>
+                                </div>
+                            </div>
+                            <div class="stats-grid">
+                                <div class="stat-item">
+                                    <div class="stat-number">24</div>
+                                    <div class="stat-label">Студента</div>
+                                </div>
+                                <div class="stat-item">
+                                    <div class="stat-number">82%</div>
+                                    <div class="stat-label">Успеваемость</div>
+                                </div>
+                                <div class="stat-item">
+                                    <div class="stat-number">76%</div>
+                                    <div class="stat-label">Посещаемость</div>
+                                </div>
+                                <div class="stat-item">
+                                    <div class="stat-number">4.8</div>
+                                    <div class="stat-label">Средний балл</div>
+                                </div>
+                            </div>
+                            <div class="progress-section">
+                                <div class="progress-header">
+                                    <span>Прогресс группы</span>
+                                    <span>68%</span>
+                                </div>
+                                <div class="progress-bar">
+                                    <div class="progress-fill" style="width: 68%;"></div>
+                                </div>
+                            </div>
+                            <button class="btn btn-secondary" style="margin-top: 24px; width: 100%;">
+                                Просмотреть всех студентов
+                            </button>
+                        </div>
+
+                        <!-- Последние активности -->
+                        <div class="card">
+                            <div class="card-header">
+                                <div class="card-icon">🔄</div>
+                                <div>
+                                    <div class="card-title">Последние активности</div>
+                                    <div class="card-subtitle">Действия студентов</div>
+                                </div>
+                            </div>
+                            <ul class="feature-list">
+                                <li class="feature-item">
+                                    <div>
+                                        <div class="feature-text">Иван Петров сдал задание "Эссе об ИИ"</div>
+                                        <div class="schedule-desc">Сегодня, 14:32 | Оценка: 8/10</div>
+                                    </div>
+                                    <div class="status-badge status-completed">Проверено</div>
+                                </li>
+                                <li class="feature-item">
+                                    <div>
+                                        <div class="feature-text">Анна Смирнова запросила помощь</div>
+                                        <div class="schedule-desc">Сегодня, 12:45 | Тема: Perfect Tenses</div>
+                                    </div>
+                                    <div class="status-badge status-active">Новое</div>
+                                </li>
+                                <li class="feature-item">
+                                    <div>
+                                        <div class="feature-text">5 студентов не сдали задание</div>
+                                        <div class="schedule-desc">Срок: сегодня, 10:00</div>
+                                    </div>
+                                    <div class="status-badge status-warning">Просрочено</div>
+                                </li>
+                                <li class="feature-item">
+                                    <div>
+                                        <div class="feature-text">Групповой чат: вопросы к экзамену</div>
+                                        <div class="schedule-desc">15 новых сообщений</div>
+                                    </div>
+                                    <div class="status-badge status-pending">Не прочитано</div>
+                                </li>
+                            </ul>
+                        </div>
+
+                        <!-- Ближайшие события -->
+                        <div class="card">
+                            <div class="card-header">
+                                <div class="card-icon">⏳</div>
+                                <div>
+                                    <div class="card-title">Ближайшие события</div>
+                                    <div class="card-subtitle">Ваше расписание</div>
+                                </div>
+                            </div>
+                            <div class="schedule-item">
+                                <div class="schedule-time">Сегодня, 14:00 - 15:30</div>
+                                <div class="schedule-title">Урок: Грамматика (B2-3)</div>
+                                <div class="schedule-desc">Тема: Perfect Tenses | Кабинет: 304</div>
+                            </div>
+                            <div class="schedule-item">
+                                <div class="schedule-time">Завтра, 10:00 - 11:30</div>
+                                <div class="schedule-title">Консультация (Анна С.)</div>
+                                <div class="schedule-desc">Онлайн | Тема: Подготовка к экзамену</div>
+                            </div>
+                            <div class="schedule-item">
+                                <div class="schedule-time">Среда, 09:00 - 10:30</div>
+                                <div class="schedule-title">Совещание преподавателей</div>
+                                <div class="schedule-desc">Конференц-зал | Повестка: Планы на семестр</div>
+                            </div>
+                            <button class="btn" style="margin-top: 24px; width: 100%;">
+                                Показать полное расписание
+                            </button>
+                        </div>
+
+                        <!-- Статистика преподавания -->
+                        <div class="card">
+                            <div class="card-header">
+                                <div class="card-icon">📈</div>
+                                <div>
+                                    <div class="card-title">Статистика преподавания</div>
+                                    <div class="card-subtitle">За текущий семестр</div>
+                                </div>
+                            </div>
+                            <div class="stats-grid">
+                                <div class="stat-item">
+                                    <div class="stat-number">156</div>
+                                    <div class="stat-label">Проверено работ</div>
+                                </div>
+                                <div class="stat-item">
+                                    <div class="stat-number">42</div>
+                                    <div class="stat-label">Проведено уроков</div>
+                                </div>
+                                <div class="stat-item">
+                                    <div class="stat-number">24</div>
+                                    <div class="stat-label">Активных студентов</div>
+                                </div>
+                                <div class="stat-item">
+                                    <div class="stat-number">89%</div>
+                                    <div class="stat-label">Удовлетворенность</div>
+                                </div>
+                            </div>
+                            <div class="progress-section">
+                                <div class="progress-header">
+                                    <span>Прогресс семестра</span>
+                                    <span>65%</span>
+                                </div>
+                                <div class="progress-bar">
+                                    <div class="progress-fill" style="width: 65%;"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Другие экраны преподавател-->
+                <!-- Экран студе -->
+                <div id="teacher-students" class="screen">
+                    <div class="card">
+                        <div class="card-header">
+                            <div class="card-icon">👥</div>
+                            <div>
+                                <div class="card-title">Управление студентами</div>
+                                <div class="card-subtitle">Группа B2-3 - Английский язык</div>
+                            </div>
+                        </div>
+                        
+                        <div class="quick-actions" style="margin-bottom: 20px;">
+                            <div class="quick-action" onclick="filterStudents('all')">Все студенты</div>
+                            <div class="quick-action" onclick="filterStudents('lagging')">Отстающие</div>
+                            <div class="quick-action" onclick="filterStudents('best')">Лучшие</div>
+                            <div class="quick-action" onclick="filterStudents('new')">Новые</div>
+                        </div>
+                        
+                        <div style="background: rgba(255,255,255,0.1); border-radius: 16px; padding: 16px; margin-bottom: 20px;">
+                            <input type="text" class="chat-input" placeholder="Поиск студентов..." style="width: 100%;" oninput="searchStudents(this.value)">
+                        </div>
+                        
+                        <div class="feature-list" id="students-list">
+                            <li class="feature-item">
+                                <div style="display: flex; align-items: center; gap: 16px;">
+                                    <div style="width: 40px; height: 40px; background: rgba(255,255,255,0.2); border-radius: 50%; display: flex; align-items: center; justify-content: center;">
+                                        👩
+                                    </div>
+                                    <div>
+                                        <div class="feature-text">Анна Смирнова</div>
+                                        <div class="schedule-desc">Уровень: B2 | Прогресс: 72% | Последняя активность: сегодня</div>
+                                    </div>
+                                </div>
+                                <div class="status-badge status-active">Активна</div>
+                            </li>
+                            <li class="feature-item">
+                                <div style="display: flex; align-items: center; gap: 16px;">
+                                    <div style="width: 40px; height: 40px; background: rgba(255,255,255,0.2); border-radius: 50%; display: flex; align-items: center; justify-content: center;">
+                                        👨
+                                    </div>
+                                    <div>
+                                        <div class="feature-text">Иван Петров</div>
+                                        <div class="schedule-desc">Уровень: B2 | Прогресс: 85% | Последняя активность: сегодня</div>
+                                    </div>
+                                </div>
+                                <div class="status-badge status-active">Активен</div>
+                            </li>
+                            <li class="feature-item">
+                                <div style="display: flex; align-items: center; gap: 16px;">
+                                    <div style="width: 40px; height: 40px; background: rgba(255,255,255,0.2); border-radius: 50%; display: flex; align-items: center; justify-content: center;">
+                                        👩
+                                    </div>
+                                    <div>
+                                        <div class="feature-text">Мария Иванова</div>
+                                        <div class="schedule-desc">Уровень: B2 | Прогресс: 68% | Последняя активность: вчера</div>
+                                    </div>
+                                </div>
+                                <div class="status-badge status-active">Активна</div>
+                            </li>
+                            <li class="feature-item">
+                                <div style="display: flex; align-items: center; gap: 16px;">
+                                    <div style="width: 40px; height: 40px; background: rgba(255,255,255,0.2); border-radius: 50%; display: flex; align-items: center; justify-content: center;">
+                                        👨
+                                    </div>
+                                    <div>
+                                        <div class="feature-text">Алексей Козлов</div>
+                                        <div class="schedule-desc">Уровень: B2 | Прогресс: 54% | Последняя активность: 2 дня назад</div>
+                                    </div>
+                                </div>
+                                <div class="status-badge status-warning">Отстает</div>
+                            </li>
+                        </div>
+                        
+                        <button class="btn" style="margin-top: 24px; width: 100%;" onclick="addNewStudent()">
+                            Добавить нового студента
+                        </button>
+                    </div>
+                    
+                    <div class="card" style="margin-top: 32px;">
+                        <div class="card-header">
+                            <div class="card-icon">📊</div>
+                            <div>
+                                <div class="card-title">Анализ группы</div>
+                                <div class="card-subtitle">Статистика и прогресс</div>
+                            </div>
+                        </div>
+                        
+                        <div class="stats-grid">
+                            <div class="stat-item">
+                                <div class="stat-number">82%</div>
+                                <div class="stat-label">Успеваемость</div>
+                            </div>
+                            <div class="stat-item">
+                                <div class="stat-number">76%</div>
+                                <div class="stat-label">Посещаемость</div>
+                            </div>
+                            <div class="stat-item">
+                                <div class="stat-number">4.8</div>
+                                <div class="stat-label">Средний балл</div>
+                            </div>
+                            <div class="stat-item">
+                                <div class="stat-number">68%</div>
+                                <div class="stat-label">Прогресс</div>
+                            </div>
+                        </div>
+                        
+                        <div style="background: rgba(255,255,255,0.1); border-radius: 16px; height: 300px; display: flex; align-items: center; justify-content: center; color: rgba(255,255,255,0.7); margin-top: 24px;">
+                            [График успеваемости группы]
+                        </div>
+                        
+                        <div class="quick-actions" style="margin-top: 20px;">
+                            <div class="quick-action">Экспорт данных</div>
+                            <div class="quick-action">Сравнить с другими группами</div>
+                            <div class="quick-action">Анализ слабых мест</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Экран заданий -->
+                <div id="teacher-assignments" class="screen">
+                    <div class="card">
+                        <div class="card-header">
+                            <div class="card-icon">📝</div>
+                            <div>
+                                <div class="card-title">Управление заданиями</div>
+                                <div class="card-subtitle">Создание и проверка работ</div>
+                            </div>
+                        </div>
+                        
+                        <div class="quick-actions" style="margin-bottom: 20px;">
+                            <div class="quick-action" onclick="filterAssignments('all')">Все задания</div>
+                            <div class="quick-action" onclick="filterAssignments('current')">Текущие</div>
+                            <div class="quick-action" onclick="filterAssignments('overdue')">Просроченные</div>
+                            <div class="quick-action" onclick="filterAssignments('checked')">Проверенные</div>
+                        </div>
+                        
+                        <div class="feature-list" id="assignments-list">
+                            <li class="feature-item">
+                                <div>
+                                    <div class="feature-text">Эссе на тему "Искусственный интеллект"</div>
+                                    <div class="schedule-desc">Срок: сегодня, 18:00 | Сдано: 19/24 | Средний балл: 7.8</div>
+                                </div>
+                                <div class="status-badge status-warning">Проверка</div>
+                            </li>
+                            <li class="feature-item">
+                                <div>
+                                    <div class="feature-text">Тест по грамматике (Perfect Tenses)</div>
+                                    <div class="schedule-desc">Срок: завтра, 09:00 | Сдано: 5/24 | Средний балл: -</div>
+                                </div>
+                                <div class="status-badge status-pending">Активно</div>
+                            </li>
+                            <li class="feature-item">
+                                <div>
+                                    <div class="feature-text">Проект: Презентация о своей стране</div>
+                                    <div class="schedule-desc">Срок: 15.06.2023 | Сдано: 0/24 | Средний балл: -</div>
+                                </div>
+                                <div class="status-badge status-pending">Запланировано</div>
+                            </li>
+                            <li class="feature-item">
+                                <div>
+                                    <div class="feature-text">Чтение статьи + обсуждение</div>
+                                    <div class="schedule-desc">Срок: 18.06.2023 | Сдано: 0/24 | Средний балл: -</div>
+                                </div>
+                                <div class="status-badge status-pending">Запланировано</div>
+                            </li>
+                        </div>
+                        
+                        <button class="btn" style="margin-top: 24px; width: 100%;" onclick="createNewAssignment()">
+                            Создать новое задание
+                        </button>
+                    </div>
+                    
+                    <div class="card" style="margin-top: 32px;">
+                        <div class="card-header">
+                            <div class="card-icon">✅</div>
+                            <div>
+                                <div class="card-title">Проверка работ</div>
+                                <div class="card-subtitle">Автоматическая оценка и анализ</div>
+                            </div>
+                        </div>
+                        
+                        <div class="file-upload">
+                            <div class="card-icon">📄</div>
+                            <div class="file-upload-text">Перетащите сюда работы студентов для автоматической проверки</div>
+                        </div>
+                        
+                        <div class="quick-actions" style="margin-top: 20px;">
+                            <div class="quick-action">Проверить грамматику</div>
+                            <div class="quick-action">Анализ уникальности</div>
+                            <div class="quick-action">Оценка сложности</div>
+                            <div class="quick-action">Сравнение с эталоном</div>
+                        </div>
+                        
+                        <div class="analysis-card" style="margin-top: 24px;">
+                            <div class="analysis-result">
+                                <div class="result-label">Последняя проверка</div>
+                                <div class="result-value">Эссе "Искусственный интеллект" (Иван П.)</div>
+                            </div>
+                            <div class="analysis-result">
+                                <div class="result-label">Грамматические ошибки</div>
+                                <div class="result-value">4 (2 критических)</div>
+                            </div>
+                            <div class="analysis-result">
+                                <div class="result-label">Уникальность</div>
+                                <div class="result-value">94%</div>
+                            </div>
+                            <div class="analysis-result">
+                                <div class="result-label">Рекомендуемая оценка</div>
+                                <div class="result-value">8/10</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Экран аналитики -->
+                <div id="teacher-analysis" class="screen">
+                    <div class="card">
+                        <div class="card-header">
+                            <div class="card-icon">📊</div>
+                            <div>
+                                <div class="card-title">Аналитика обучения</div>
+                                <div class="card-subtitle">Подробная статистика и отчеты</div>
+                            </div>
+                        </div>
+                        
+                        <div class="stats-grid">
+                            <div class="stat-item">
+                                <div class="stat-number">82%</div>
+                                <div class="stat-label">Успеваемость</div>
+                            </div>
+                            <div class="stat-item">
+                                <div class="stat-number">76%</div>
+                                <div class="stat-label">Посещаемость</div>
+                            </div>
+                            <div class="stat-item">
+                                <div class="stat-number">4.8</div>
+                                <div class="stat-label">Средний балл</div>
+                            </div>
+                            <div class="stat-item">
+                                <div class="stat-number">68%</div>
+                                <div class="stat-label">Прогресс</div>
+                            </div>
+                        </div>
+                        
+                        <h3 style="color: white; margin: 24px 0 16px; font-size: 20px;">Графики успеваемости</h3>
+                        <div style="background: rgba(255,255,255,0.1); border-radius: 16px; height: 300px; display: flex; align-items: center; justify-content: center; color: rgba(255,255,255,0.7);">
+                            [Графики аналитики будут здесь]
+                        </div>
+                        
+                        <div class="quick-actions" style="margin-top: 20px;">
+                            <div class="quick-action">Слабые места группы</div>
+                            <div class="quick-action">Сравнить с другими группами</div>
+                            <div class="quick-action">Прогноз успеваемости</div>
+                            <div class="quick-action">Экспорт отчетов</div>
+                        </div>
+                    </div>
+                    
+                    <div class="card" style="margin-top: 32px;">
+                        <div class="card-header">
+                            <div class="card-icon">🔍</div>
+                            <div>
+                                <div class="card-title">Анализ контента</div>
+                                <div class="card-subtitle">Эффективность учебных материалов</div>
+                            </div>
+                        </div>
+                        
+                        <div class="analysis-card">
+                            <div class="analysis-result">
+                                <div class="result-label">Самые сложные темы</div>
+                                <div class="result-value">Perfect Tenses, Passive Voice</div>
+                            </div>
+                            <div class="analysis-result">
+                                <div class="result-label">Самые эффективные материалы</div>
+                                <div class="result-value">Интерактивные упражнения</div>
+                            </div>
+                            <div class="analysis-result">
+                                <div class="result-label">Рекомендуемые улучшения</div>
+                                <div class="result-value">Добавить видео по Perfect Tenses</div>
+                            </div>
+                        </div>
+                        
+                        <button class="btn" style="margin-top: 24px; width: 100%;">
+                            Сгенерировать полный отчет
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Экран контента -->
+                <div id="teacher-content" class="screen">
+                    <div class="card">
+                        <div class="card-header">
+                            <div class="card-icon">📚</div>
+                            <div>
+                                <div class="card-title">Учебные материалы</div>
+                                <div class="card-subtitle">Библиотека ресурсов</div>
+                            </div>
+                        </div>
+                        
+                        <div class="quick-actions" style="margin-bottom: 20px;">
+                            <div class="quick-action" onclick="filterContent('all')">Все материалы</div>
+                            <div class="quick-action" onclick="filterContent('grammar')">Грамматика</div>
+                            <div class="quick-action" onclick="filterContent('vocabulary')">Лексика</div>
+                            <div class="quick-action" onclick="filterContent('listening')">Аудирование</div>
+                            <div class="quick-action" onclick="filterContent('bookmarks')">Мои закладки</div>
+                        </div>
+                        
+                        <div class="feature-list" id="content-list">
+                            <li class="feature-item">
+                                <div>
+                                    <div class="feature-text">Perfect Tenses - Полное руководство</div>
+                                    <div class="schedule-desc">PDF | 15 страниц | 10 упражнений</div>
+                                </div>
+                                <div class="status-badge status-active">Популярное</div>
+                            </li>
+                            <li class="feature-item">
+                                <div>
+                                    <div class="feature-text">Деловая переписка на английском</div>
+                                    <div class="schedule-desc">Видеоурок | 25 минут | 5 примеров</div>
+                                </div>
+                                <div class="status-badge status-completed">Проверено</div>
+                            </li>
+                            <li class="feature-item">
+                                <div>
+                                    <div class="feature-text">Топ-100 фразовых глаголов</div>
+                                    <div class="schedule-desc">Интерактивный тест | 50 вопросов</div>
+                                </div>
+                                <div class="status-badge status-completed">Проверено</div>
+                            </li>
+                            <li class="feature-item">
+                                <div>
+                                    <div class="feature-text">TED Talk: Будущее технологий</div>
+                                    <div class="schedule-desc">Видео + субтитры | Упражнения</div>
+                                </div>
+                                <div class="status-badge status-pending">Новое</div>
+                            </li>
+                        </div>
+                        
+                        <button class="btn" style="margin-top: 24px; width: 100%;" onclick="createNewMaterial()">
+                            Добавить новый материал
+                        </button>
+                    </div>
+                    
+                    <div class="card" style="margin-top: 32px;">
+                        <div class="card-header">
+                            <div class="card-icon">🛠️</div>
+                            <div>
+                                <div class="card-title">Генератор контента</div>
+                                <div class="card-subtitle">Создание упражнений и материалов</div>
+                            </div>
+                        </div>
+                        
+                        <div class="quick-actions" style="margin-top: 20px;">
+                            <div class="quick-action" onclick="generateExercise()">Создать тест</div>
+                            <div class="quick-action">Генератор упражнений</div>
+                            <div class="quick-action">Планирование урока</div>
+                            <div class="quick-action">Адаптивные материалы</div>
+                        </div>
+                        
+                        <div style="background: rgba(255,255,255,0.1); border-radius: 16px; padding: 24px; margin-top: 24px;">
+                            <h3 style="color: white; margin-bottom: 16px; font-size: 18px;">Создать новое упражнение</h3>
+                            
+                            <input type="text" class="chat-input" placeholder="Тема упражнения" style="width: 100%; margin-bottom: 16px;">
+                            
+                            <select class="chat-input" style="width: 100%; margin-bottom: 16px;">
+                                <option>Выберите тип упражнения</option>
+                                <option>Грамматический тест</option>
+                                <option>Лексический тест</option>
+                                <option>Аудирование</option>
+                                <option>Чтение</option>
+                                <option>Письмо</option>
+                            </select>
+                            
+                            <select class="chat-input" style="width: 100%; margin-bottom: 16px;">
+                                <option>Выберите уровень сложности</option>
+                                <option>A1 (Beginner)</option>
+                                <option>A2 (Elementary)</option>
+                                <option>B1 (Intermediate)</option>
+                                <option>B2 (Upper Intermediate)</option>
+                                <option>C1 (Advanced)</option>
+                            </select>
+                            
+                            <button class="btn" style="width: 100%;">
+                                Сгенерировать упражнение
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Экран расписания -->
+                <div id="teacher-schedule" class="screen">
+                    <div class="card">
+                        <div class="card-header">
+                            <div class="card-icon">⏰</div>
+                            <div>
+                                <div class="card-title">Расписание занятий</div>
+                                <div class="card-subtitle">Уроки и мероприятия</div>
+                            </div>
+                        </div>
+                        
+                        <div class="schedule-item">
+                            <div class="schedule-time">Сегодня, 14:00 - 15:30</div>
+                            <div class="schedule-title">Урок: Грамматика (B2-3)</div>
+                            <div class="schedule-desc">Тема: Perfect Tenses | Кабинет: 304</div>
+                        </div>
+                        <div class="schedule-item">
+                            <div class="schedule-time">Завтра, 10:00 - 11:30</div>
+                            <div class="schedule-title">Консультация (Анна С.)</div>
+                            <div class="schedule-desc">Онлайн | Тема: Подготовка к экзамену</div>
+                        </div>
+                        <div class="schedule-item">
+                            <div class="schedule-time">Среда, 09:00 - 10:30</div>
+                            <div class="schedule-title">Совещание преподавателей</div>
+                            <div class="schedule-desc">Конференц-зал | Повестка: Планы на семестр</div>
+                        </div>
+                        <div class="schedule-item">
+                            <div class="schedule-time">Пятница, 12:00 - 13:30</div>
+                            <div class="schedule-title">Подготовка к экзамену (B2-3)</div>
+                            <div class="schedule-desc">Кабинет: 304 | Тема: Повторение</div>
+                        </div>
+                        
+                        <button class="btn" style="margin-top: 24px; width: 100%;">
+                            Добавить новое событие
+                        </button>
+                    </div>
+                    
+                    <div class="card" style="margin-top: 32px;">
+                        <div class="card-header">
+                            <div class="card-icon">📅</div>
+                            <div>
+                                <div class="card-title">Календарь преподавателя</div>
+                                <div class="card-subtitle">Планирование и управление временем</div>
+                            </div>
+                        </div>
+                        
+                        <div style="background: rgba(255,255,255,0.1); border-radius: 16px; height: 300px; display: flex; align-items: center; justify-content: center; color: rgba(255,255,255,0.7);">
+                            [Интерактивный календарь будет здесь]
+                        </div>
+                        
+                        <div class="quick-actions" style="margin-top: 20px;">
+                            <div class="quick-action">Экспорт в Google Calendar</div>
+                            <div class="quick-action">Напоминания</div>
+                            <div class="quick-action">Автопланирование</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Экран ассистента -->
+                <div id="teacher-assistant" class="screen">
+                    <div class="chat-interface">
+                        <div class="chat-header">
+                            <div class="card-icon">🤖</div>
+                            <div class="chat-title">Ultron Teaching Assistant</div>
+                        </div>
+                        <div class="chat-messages" id="teacher-chat-messages">
+                            <div class="message ai">
+                                Добрый день! Готов помочь с планированием уроков и анализом успеваемости студентов.
+                            </div>
+                            <div class="message user">
+                                Нужна помощь с подбором материалов по Perfect Tenses для группы B2.
+                            </div>
+                            <div class="message ai">
+                                У меня есть 5 проверенных уроков по этой теме. Рекомендую начать с интерактивного упражнения на различия между Present Perfect и Past Simple. Хотите просмотреть материалы?
+                            </div>
+                        </div>
+                        <div class="chat-input-container">
+                            <input type="text" class="chat-input" placeholder="Напишите ваш запрос...">
+                            <button class="btn" onclick="sendTeacherMessage()">Отправить</button>
+                        </div>
+                        <div class="quick-actions">
+                            <div class="quick-action">Анализ успеваемости</div>
+                            <div class="quick-action">Планирование урока</div>
+                            <div class="quick-action">Генерация теста</div>
+                            <div class="quick-action">Проверка заданий</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="js/student.js"></script>
+    <script src="js/teacher.js"></script>
+    <script src="js/main.js"></script>
+</body>
+</html>
