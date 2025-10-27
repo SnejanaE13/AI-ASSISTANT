@@ -41,7 +41,6 @@ body {
 
 .form-group {
     margin-bottom: 20px;
-    position: relative;
 }
 
 label {
@@ -65,29 +64,6 @@ input:focus {
     border-color: #667eea;
 }
 
-.password-container {
-    position: relative;
-}
-
-.toggle-password {
-    position: absolute;
-    right: 12px;
-    top: 50%;
-    transform: translateY(-50%);
-    background: none;
-    border: none;
-    cursor: pointer;
-    color: #666;
-    font-size: 14px;
-}
-
-.error-message {
-    color: #e74c3c;
-    font-size: 12px;
-    margin-top: 5px;
-    display: none;
-}
-
 .submit-btn {
     width: 100%;
     padding: 14px;
@@ -103,12 +79,6 @@ input:focus {
 
 .submit-btn:hover {
     transform: translateY(-2px);
-}
-
-.submit-btn:disabled {
-    background: #cccccc;
-    cursor: not-allowed;
-    transform: none;
 }
 
 .login-link {
@@ -156,6 +126,7 @@ select option {
     color: #333;
     padding: 10px;
 }
+/* Добавьте в конец css/style.css */
 
 /* Планшеты и маленькие ноутбуки */
 @media (max-width: 1024px) {
@@ -202,5 +173,37 @@ select option {
     
     .form-group {
         margin-bottom: 15px;
+    }
+}
+/* Адаптивность для страницы авторизации */
+@media (max-width: 1024px) {
+    .login-container {
+        max-width: 400px;
+        padding: 30px;
+    }
+}
+
+@media (max-width: 768px) {
+    .login-container {
+        padding: 25px 20px;
+        max-width: 100%;
+    }
+    
+    .login-header h1 {
+        font-size: 24px;
+    }
+}
+
+@media (max-width: 480px) {
+    .login-container {
+        padding: 20px 15px;
+    }
+    
+    .login-header h1 {
+        font-size: 22px;
+    }
+    
+    .login-header p {
+        font-size: 13px;
     }
 }
