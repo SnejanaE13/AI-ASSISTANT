@@ -1,0 +1,131 @@
+<!doctype html>
+<html lang="ru">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Регистрация</title>
+        <link rel="stylesheet" href="/static/css/style.css" />
+        <!-- <script src="js/script.js"></script> -->
+        <!-- Удален старый импорт, будет в конце body -->
+    </head>
+    <body>
+        <div class="registration-container">
+            <div class="registration-header">
+                <h1>Создать аккаунт</h1>
+                <p>Заполните форму ниже для регистрации</p>
+            </div>
+
+            <!-- Сообщение об успехе или ошибке -->
+            <div id="message-display"></div>
+
+            <form id="registrationForm">
+                <!-- ФИО в столбик -->
+                <div class="form-group">
+                    <label for="lastname">Фамилия</label>
+                    <input
+                        type="text"
+                        id="lastname"
+                        name="lastname"
+                        placeholder="Фамилия"
+                        required
+                    />
+                </div>
+
+                <div class="form-group">
+                    <label for="firstname">Имя</label>
+                    <input
+                        type="text"
+                        id="firstname"
+                        name="firstname"
+                        placeholder="Имя"
+                        required
+                    />
+                </div>
+
+                <div class="form-group">
+                    <label for="middlename">Отчество</label>
+                    <input
+                        type="text"
+                        id="middlename"
+                        name="middlename"
+                        placeholder="Отчество"
+                    />
+                </div>
+
+                <!-- Статус - выпадающий список -->
+                <div class="form-group">
+                    <label for="status">Статус</label>
+                    <select id="status" name="status" required>
+                        <option value="">Выберите ваш статус</option>
+                        <option value="teacher">Учитель</option>
+                        <option value="student">Ученик</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="email">Email адрес</label>
+                    <input
+                        type="email"
+                        id="email"
+                        name="email"
+                        placeholder="example@mail.com"
+                        required
+                    />
+                </div>
+
+                <div class="form-group">
+                    <label for="password">Пароль</label>
+                    <div class="password-container">
+                        <input
+                            type="password"
+                            id="password"
+                            name="password"
+                            placeholder="Не менее 9 символов, латиница"
+                            required
+                        />
+                        <button
+                            type="button"
+                            class="toggle-password"
+                            id="togglePassword"
+                        >
+                            Показать
+                        </button>
+                    </div>
+                    <div class="error-message" id="passwordError"></div>
+                </div>
+
+                <div class="form-group">
+                    <label for="confirm-password">Подтвердите пароль</label>
+                    <div class="password-container">
+                        <input
+                            type="password"
+                            id="confirm-password"
+                            name="confirm-password"
+                            placeholder="Повторите пароль"
+                            required
+                        />
+                        <button
+                            type="button"
+                            class="toggle-password"
+                            id="toggleConfirmPassword"
+                        >
+                            Показать
+                        </button>
+                    </div>
+                    <div class="error-message" id="confirmPasswordError"></div>
+                </div>
+
+                <button type="submit" class="submit-btn" id="submitBtn">
+                    Зарегистрироваться
+                </button>
+
+                <div class="login-link">
+                    Уже есть аккаунт? <a href="/login">Войти</a>
+                </div>
+            </form>
+        </div>
+
+        <!-- Перемещенный и обновленный скрипт -->
+        <script src="/static/js/script.js"></script>
+    </body>
+</html>
