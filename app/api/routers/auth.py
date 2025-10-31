@@ -83,14 +83,33 @@ def login_for_access_token(user_login: schemas.UserLogin, db: Session = Depends(
                 except Exception:
                     fails = 0
                 if fails >= 3:
-                    ttl = redis_client.ttl(key)
-                    if ttl and ttl > 0:
-                        logger.info("Login blocked for %s (email=%s, ip=%s) — %d failed attempts, ttl=%s", key, user_login.email, client_ip, fails, ttl)
-                        raise HTTPException(
-                            status_code=status.HTTP_401_UNAUTHORIZED,
-                            detail="Неверный email или пароль",
-                            headers={"WWW-Authenticate": "Bearer"},
-                        )
+                    try:
+                        ttl = redis_client.ttl(key)
+                    except RedisError as e:
+                        ttl = None
+                        logger.warning("Redis error while fetching TTL for %s: %s", key, e)
+
+                    if ttl is None:
+                        ttl_display = "unknown"
+                    elif ttl <= 0:
+                        ttl_display = "no expiry"
+                    else:
+                        ttl_display = ttl
+
+                    logger.info(
+                        "Login blocked for %s (email=%s, ip=%s) — %d failed attempts, ttl=%s",
+                        key,
+                        user_login.email,
+                        client_ip,
+                        fails,
+                        ttl_display,
+                    )
+
+                    raise HTTPException(
+                        status_code=status.HTTP_401_UNAUTHORIZED,
+                        detail="Неверный email или пароль",
+                        headers={"WWW-Authenticate": "Bearer"},
+                    )
         except RedisError as e:
             logger.warning("Redis error while checking login attempts for %s: %s", key, e)
         except Exception as e:
@@ -101,7 +120,6 @@ def login_for_access_token(user_login: schemas.UserLogin, db: Session = Depends(
             try:
                 new = redis_client.incr(key)
                 if new == 1:
-                    # first failure: set expiry to 5 minutes (300 seconds)
                     redis_client.expire(key, 300)
                 logger.info("Failed login attempt for %s (email=%s, ip=%s). Count=%s", key, user_login.email, client_ip, new)
             except RedisError as e:
