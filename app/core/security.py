@@ -1,5 +1,5 @@
 import bcrypt
-from datetime import datetime
+from datetime import datetime, timezone
 from fastapi import Depends, HTTPException, status
 from fastapi.security import APIKeyHeader
 from sqlalchemy.orm import Session
@@ -40,7 +40,7 @@ async def get_current_user(
         .filter(
             models.Session.token == token,
             models.Session.is_active == True,
-            models.Session.expires_at > datetime.utcnow(),
+            models.Session.expires_at > datetime.now(timezone.utc),
         )
         .first()
     )

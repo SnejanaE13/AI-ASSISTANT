@@ -1,14 +1,19 @@
 from pydantic import BaseModel, EmailStr, constr, field_validator
 from typing import Optional
+from enum import Enum
+
+class UserRole(str, Enum):
+    student = "student"
+    teacher = "teacher"
 
 class UserCreate(BaseModel):
     email: EmailStr
-    # Пароль должен быть >= 8 символов, как в script.js
-    password: constr(min_length=8)
+    # Пароль должен быть >= 9 символов, как в script.js
+    password: constr(min_length=9)
     first_name: str
     last_name: str
     second_name: Optional[str] = None
-    role: str  # 'student' или 'teacher'
+    role: UserRole
 
     @field_validator("password")
     @classmethod

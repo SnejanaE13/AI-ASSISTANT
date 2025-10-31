@@ -8,7 +8,7 @@ from sqlalchemy import (
     Text,
 )
 from sqlalchemy.orm import relationship
-from datetime import datetime
+from datetime import datetime, timezone
 from .database import Base
 
 class User(Base):
@@ -20,7 +20,7 @@ class User(Base):
     second_name = Column(String(30), nullable=True)
     role = Column(String(20), nullable=False)  # 'student' или 'teacher'
     password_hash = Column(Text, nullable=False)
-    created_at = Column(DateTime, default=datetime.utcnow)
+    created_at = Column(DateTime, default=lambda: datetime.now(timezone.utc))
 
     sessions = relationship("Session", back_populates="user")
     messages = relationship("Message", back_populates="user")
@@ -31,7 +31,7 @@ class Session(Base):
     session_id = Column(Integer, primary_key=True, index=True)
     token = Column(String, unique=True, index=True, nullable=False)
     user_id = Column(Integer, ForeignKey("users.user_id"), nullable=False)
-    created_at = Column(DateTime, default=datetime.utcnow)
+    created_at = Column(DateTime, default=lambda: datetime.now(timezone.utc))
     expires_at = Column(DateTime, nullable=False)
     is_active = Column(Boolean, default=True)
 
@@ -42,9 +42,10 @@ class Message(Base):
     __tablename__ = "messages"
     message_id = Column(Integer, primary_key=True, index=True)
     user_id = Column(Integer, ForeignKey("users.user_id"), nullable=False)
-    session_id = Column(String, nullable=False)
+    session_id = Column(Integer, ForeignKey("sessions.session_id"), nullable=False)
     sender_type = Column(String(10), nullable=False)  # 'user' или 'ai'
     content = Column(Text, nullable=False)
-    timestamp = Column(DateTime, default=datetime.utcnow)
+    timestamp = Column(DateTime, default=lambda: datetime.now(timezone.utc))
 
     user = relationship("User", back_populates="messages")
+    session = relationship("Session")

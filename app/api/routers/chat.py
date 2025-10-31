@@ -78,7 +78,7 @@ async def get_chat_history(
         {
             "sender_type": msg.sender_type,
             "content": msg.content,
-            "timestamp": msg.timestamp,
+            "timestamp": msg.timestamp.isoformat(),
         }
         for msg in history
     ]
