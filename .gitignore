@@ -13,3 +13,9 @@ venv/
 # IDEs
 .idea/
 .vscode/
+
+# test files
+test_*.py
+
+# db
+ai_assistant_database.db

@@ -4,8 +4,8 @@
 from db.connection import get_connection
 from db.schema import create_db
 from db.CRUD import create_user, get_user_by_username, verify_password
-from db.sessions import create_session, get_session, validate_session, delete_expired_sessions
-from db.chat_functions import save_message, get_chat_history, get_user_chat_sessions
+from db.sessions import create_session, get_session, delete_expired_sessions
+from db.chat_functions import save_message, get_chat_history
 import os
 
 
