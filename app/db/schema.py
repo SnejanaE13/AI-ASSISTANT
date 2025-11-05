@@ -1,4 +1,4 @@
-from data_base.connection import get_connection
+from db.connection import get_connection
 
 
 def create_db():

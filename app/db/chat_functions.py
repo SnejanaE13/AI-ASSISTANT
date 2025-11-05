@@ -1,5 +1,5 @@
 from datetime import datetime
-from data_base.connection import get_connection
+from db.connection import get_connection
 
 
 def save_message(user_id, session_id, sender_type, content, prompt_id=None):

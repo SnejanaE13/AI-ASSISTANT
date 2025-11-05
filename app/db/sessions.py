@@ -1,5 +1,5 @@
 from datetime import datetime, timedelta
-from connection import get_connection
+from db.connection import get_connection
 import uuid
 
 
@@ -14,10 +14,12 @@ def create_session(user_id, duration_minutes=60):
     cursor.execute("""
         INSERT INTO Session (session_id, token, user_id, 
         created_at, expires_at, is_active)
+        VALUES (?, ?, ?, ?, ?, ?)
         """, (session_id, token, user_id, created_at.isoformat(), expires_at.isoformat(), True))
 
     conn.commit()
     conn.close()
+    return session_id, token
 
 
 def get_session(session_id):
