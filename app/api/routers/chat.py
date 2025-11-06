@@ -6,6 +6,8 @@ from app.db import models
 from app.db import schemas
 from app.db.database import get_db
 from app.core.security import get_current_user, auth_header
+from app.llm_client import send_prompt
+from anyio import to_thread
 
 router = APIRouter()
 
@@ -27,7 +29,13 @@ async def chat_endpoint(
 
     # 2. Здесь будет вызов LLM API (Google Gemini)
     # response_text = call_gemini_api(message.content, current_user.role)
-    response_text = f"Заглушка ответа AI: Вы (роль: {current_user.role}) сказали '{message.content}'. Полная интеграция с LLM в разработке."
+    prompt = (
+            f"Пользователь (роль: {current_user.role}) написал: {message.content}\n"
+            "Ответь дружелюбно, кратко и по существу."
+        )
+    response_text = await to_thread.run_sync(send_prompt, prompt)
+    if not response_text or response_text.strip() == "":
+            response_text = "Модель вернула пустой ответ."
 
     # 3. Сохраняем ответ AI
     save_message(db=db, message=schemas.MessageCreate(user_id=current_user.user_id, session_id=token, sender_type="ai", content=response_text))
