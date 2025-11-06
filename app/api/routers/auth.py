@@ -7,7 +7,7 @@ import logging
 import redis
 from redis.exceptions import RedisError
 from app.db import models
-from app.schemas import user as schemas
+from app.db import schemas
 from app.db.database import get_db
 from app.core.security import get_password_hash, verify_password, get_current_user, auth_header
 
@@ -55,6 +55,8 @@ def register_user(user: schemas.UserCreate, db: Session = Depends(get_db)):
     db.refresh(new_user)
     return new_user
 
+
+from app.db.sessions import create_session
 
 @router.post("/login", response_model=schemas.TokenResponse)
 def login_for_access_token(user_login: schemas.UserLogin, db: Session = Depends(get_db), request: Request = None):
@@ -140,16 +142,9 @@ def login_for_access_token(user_login: schemas.UserLogin, db: Session = Depends(
             logger.exception("Unexpected error while deleting login attempts key %s", key)
 
     # Создаем сессию
-    session_token = str(uuid.uuid4())
-    expires = datetime.now(timezone.utc) + timedelta(days=1)
+    new_session = create_session(db=db, user_id=db_user.user_id)
 
-    new_session = models.Session(
-        token=session_token, user_id=db_user.user_id, expires_at=expires, is_active=True
-    )
-    db.add(new_session)
-    db.commit()
-
-    return schemas.TokenResponse(session_token=session_token, user_role=db_user.role)
+    return schemas.TokenResponse(session_token=new_session.token, user_role=db_user.role)
 
 
 @router.post("/logout")

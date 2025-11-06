@@ -3,12 +3,13 @@ from sqlalchemy.orm import Session
 from datetime import datetime
 
 from app.db import models
-from app.schemas import chat as schemas
+from app.db import schemas
 from app.db.database import get_db
 from app.core.security import get_current_user, auth_header
 
 router = APIRouter()
 
+from app.db.chat_functions import save_message, get_chat_history
 
 @router.post("/chat")
 async def chat_endpoint(
@@ -22,27 +23,14 @@ async def chat_endpoint(
     Здесь будет вызов LLM (Google Gemini).
     """
     # 1. Сохраняем сообщение пользователя
-    db_message_user = models.Message(
-        user_id=current_user.user_id,
-        session_id=token,  # Используем токен сессии как ID
-        sender_type="user",
-        content=message.content,
-    )
-    db.add(db_message_user)
+    save_message(db=db, message=schemas.MessageCreate(user_id=current_user.user_id, session_id=token, sender_type="user", content=message.content))
 
     # 2. Здесь будет вызов LLM API (Google Gemini)
     # response_text = call_gemini_api(message.content, current_user.role)
     response_text = f"Заглушка ответа AI: Вы (роль: {current_user.role}) сказали '{message.content}'. Полная интеграция с LLM в разработке."
 
     # 3. Сохраняем ответ AI
-    db_message_ai = models.Message(
-        user_id=current_user.user_id,
-        session_id=token,
-        sender_type="ai",
-        content=response_text,
-    )
-    db.add(db_message_ai)
-    db.commit()
+    save_message(db=db, message=schemas.MessageCreate(user_id=current_user.user_id, session_id=token, sender_type="ai", content=response_text))
 
     return {"sender": "ai", "content": response_text, "timestamp": datetime.utcnow()}
 
@@ -54,13 +42,7 @@ async def get_chat_history(
     """
     Возвращает историю чата.
     """
-    history = (
-        db.query(models.Message)
-        .filter(models.Message.user_id == current_user.user_id)
-        .order_by(models.Message.timestamp.desc())
-        .limit(20)
-        .all()
-    )
+    history = get_chat_history(db=db, session_id=current_user.sessions[-1].session_id)
 
     # Разворачиваем, чтобы были от старых к новым
     history.reverse()

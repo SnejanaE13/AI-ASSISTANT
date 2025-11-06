@@ -1,35 +1,14 @@
-from datetime import datetime
-from db.connection import get_connection
+from sqlalchemy.orm import Session
+from . import models, schemas
 
+def save_message(db: Session, message: schemas.MessageCreate):
+    db_message = models.Message(**message.dict())
+    db.add(db_message)
+    db.commit()
+    db.refresh(db_message)
+    return db_message
 
-def save_message(user_id, session_id, sender_type, content, prompt_id=None):
-    conn = get_connection()
-    cursor = conn.cursor()
-
-    cursor.execute("""
-    INSERT INTO Messages (user_id, session_id, sender_type, content, timestamp, prompt_id)
-    VALUES (?,?,?,?,?,?);""",(
-        user_id,
-        session_id,
-        sender_type,
-        content,
-        datetime.now().isoformat(),
-        prompt_id))
-
-    conn.commit()
-    conn.close()
-
-
-def get_chat_history(session_id, limit=20):
-    conn = get_connection()
-    cursor = conn.cursor()
-    cursor.execute("""
-        SELECT * FROM Messages WHERE session_id = ? 
-        ORDER BY timestamp DESC LIMIT ?
-        """, (session_id, limit))
-
-    messages = cursor.fetchall()
-    conn.close()
-    return messages
+def get_chat_history(db: Session, session_id: str, limit: int = 20):
+    return db.query(models.Message).filter(models.Message.session_id == session_id).order_by(models.Message.timestamp.desc()).limit(limit).all()
 
 

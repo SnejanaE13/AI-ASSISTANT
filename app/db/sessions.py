@@ -1,54 +1,38 @@
+from sqlalchemy.orm import Session
+from . import models, schemas
 from datetime import datetime, timedelta
-from db.connection import get_connection
 import uuid
 
-
-def create_session(user_id, duration_minutes=60):
-    conn = get_connection()
-    cursor = conn.cursor()
+def create_session(db: Session, user_id: int, duration_minutes: int = 60) -> models.Session:
     session_id = str(uuid.uuid4())
     token = str(uuid.uuid4())
     created_at = datetime.now()
     expires_at = created_at + timedelta(minutes=duration_minutes)
+    db_session = models.Session(
+        session_id=session_id,
+        token=token,
+        user_id=user_id,
+        created_at=created_at,
+        expires_at=expires_at,
+        is_active=True
+    )
+    db.add(db_session)
+    db.commit()
+    db.refresh(db_session)
+    return db_session
 
-    cursor.execute("""
-        INSERT INTO Session (session_id, token, user_id, 
-        created_at, expires_at, is_active)
-        VALUES (?, ?, ?, ?, ?, ?)
-        """, (session_id, token, user_id, created_at.isoformat(), expires_at.isoformat(), True))
+def get_session(db: Session, session_id: str) -> models.Session:
+    return db.query(models.Session).filter(models.Session.session_id == session_id).first()
 
-    conn.commit()
-    conn.close()
-    return session_id, token
+def delete_session(db: Session, session_id: str):
+    db_session = db.query(models.Session).filter(models.Session.session_id == session_id).first()
+    if db_session:
+        db.delete(db_session)
+        db.commit()
 
-
-def get_session(session_id):
-    conn = get_connection()
-    cursor = conn.cursor()
-    cursor.execute("""SELECT * FROM Session WHERE session_id = ?""", (session_id, ))
-    session = cursor.fetchone()
-    conn.close()
-    return session
-
-
-def delete_session(session_id):
-    conn = get_connection()
-    cursor = conn.cursor()
-    cursor.execute(""" DELETE FROM Session WHERE session_id = ?
-    """, (session_id, ))
-    conn.commit()
-    conn.close()
-
-
-
-def delete_expired_sessions():
-    conn = get_connection()
-    cursor = conn.cursor()
-    cursor.execute("""
-    DELETE FROM Session WHERE expires_at < ? OR is_active = 0
-    """, (datetime.now().isoformat(), ))
-    conn.commit()
-    conn.close()
+def delete_expired_sessions(db: Session):
+    db.query(models.Session).filter(models.Session.expires_at < datetime.now()).delete()
+    db.commit()
 
 
 

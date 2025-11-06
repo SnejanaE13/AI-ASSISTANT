@@ -40,3 +40,12 @@ class UserResponse(BaseModel):
 
     class Config:
         from_attributes = True
+
+class ChatMessage(BaseModel):
+    content: constr(max_length=500)  # Лимит 500 символов из тз
+
+class MessageCreate(BaseModel):
+    user_id: int
+    session_id: str
+    sender_type: str
+    content: str
