@@ -1,19 +1,3 @@
-* {
-    box-sizing: border-box;
-    margin: 0;
-    padding: 0;
-}
-
-body {
-    font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-    min-height: 100vh;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding: 20px;
-}
-
 .registration-container {
     background: white;
     padding: 40px;
@@ -39,48 +23,6 @@ body {
     font-size: 14px;
 }
 
-.form-group {
-    margin-bottom: 20px;
-}
-
-label {
-    display: block;
-    margin-bottom: 8px;
-    color: #333;
-    font-weight: 500;
-}
-
-input {
-    width: 100%;
-    padding: 12px 15px;
-    border: 2px solid #e1e1e1;
-    border-radius: 8px;
-    font-size: 16px;
-    transition: border-color 0.3s;
-}
-
-input:focus {
-    outline: none;
-    border-color: #667eea;
-}
-
-.submit-btn {
-    width: 100%;
-    padding: 14px;
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-    color: white;
-    border: none;
-    border-radius: 8px;
-    font-size: 16px;
-    font-weight: 600;
-    cursor: pointer;
-    transition: transform 0.2s;
-}
-
-.submit-btn:hover {
-    transform: translateY(-2px);
-}
-
 .login-link {
     text-align: center;
     margin-top: 20px;
@@ -96,7 +38,6 @@ input:focus {
     text-decoration: underline;
 }
 
-/* Стили для выпадающего списка */
 select {
     width: 100%;
     padding: 12px 15px;
@@ -127,112 +68,6 @@ select option {
     padding: 10px;
 }
 
-/* Планшеты и маленькие ноутбуки */
-@media (max-width: 1024px) {
-    .registration-container {
-        max-width: 400px;
-        padding: 30px;
-    }
-}
-
-/* Мобильные устройства */
-@media (max-width: 768px) {
-    body {
-        padding: 15px;
-    }
-
-    .registration-container {
-        padding: 25px 20px;
-        max-width: 100%;
-    }
-
-    .registration-header h1 {
-        font-size: 24px;
-    }
-
-    input,
-    select {
-        padding: 10px 12px;
-        font-size: 16px; /* Важно для iOS */
-    }
-}
-
-/* Маленькие телефоны */
-@media (max-width: 480px) {
-    body {
-        padding: 10px;
-    }
-
-    .registration-container {
-        padding: 20px 15px;
-    }
-
-    .registration-header h1 {
-        font-size: 22px;
-    }
-
-    .form-group {
-        margin-bottom: 15px;
-    }
-}
-/* Адаптивность для страницы авторизации */
-@media (max-width: 1024px) {
-    .login-container {
-        max-width: 400px;
-        padding: 30px;
-    }
-}
-
-@media (max-width: 768px) {
-    .login-container {
-        padding: 25px 20px;
-        max-width: 100%;
-    }
-
-    .login-header h1 {
-        font-size: 24px;
-    }
-}
-
-@media (max-width: 480px) {
-    .login-container {
-        padding: 20px 15px;
-    }
-
-    .login-header h1 {
-        font-size: 22px;
-    }
-
-    .login-header p {
-        font-size: 13px;
-    }
-}
-
-/* Добавляем стили для сообщений */
-.message-display {
-    padding: 12px 15px;
-    border-radius: 8px;
-    font-size: 14px;
-    margin-bottom: 20px;
-    display: none; /* Скрыто по умолчанию */
-    border: 1px solid transparent;
-}
-
-.message-display.error {
-    background-color: #f8d7da;
-    border-color: #f5c6cb;
-    color: #721c24;
-    display: block;
-}
-
-.message-display.success {
-    background-color: #d4edda;
-    border-color: #c3e6cb;
-    color: #155724;
-    display: block;
-}
-
-/* Стили для кнопки "Показать/Скрыть" пароль */
 .password-container {
     position: relative;
 }
@@ -250,7 +85,6 @@ select option {
     padding: 5px;
 }
 
-/* Стили для ошибок валидации */
 .error-message {
     color: #e74c3c;
     font-size: 13px;
