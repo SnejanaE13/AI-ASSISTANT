@@ -11,9 +11,14 @@ SQLALCHEMY_DATABASE_URL = f"sqlite:///{DB_PATH}"
 
 from app.core.config import settings
 
+<<<<<<< HEAD
 engine = create_engine(
     settings.SQLALCHEMY_DATABASE_URL, connect_args={"check_same_thread": False}
 
+=======
+engine = create_engine(    settings.SQLALCHEMY_DATABASE_URL, connect_args={"check_same_thread": False}
+)
+>>>>>>> f47be56 (update database)
 SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
 Base = declarative_base()
 

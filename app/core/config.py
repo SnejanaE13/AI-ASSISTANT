@@ -12,7 +12,8 @@ class Settings(BaseSettings):
     ALLOWED_ORIGINS: list[str] = ["*"]
 
     # Database
-    SQLALCHEMY_DATABASE_URL: str = "sqlite:///./db/main.db"
+    SQLALCHEMY_DATABASE_URL: str = "sqlite:///./app/db/main.db"
+
 
     # Redis
     REDIS_URL: str = "redis://localhost:6379/0"
