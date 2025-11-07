@@ -6,23 +6,24 @@ from fastapi.responses import HTMLResponse
 
 from app.db.database import Base, engine
 from app.api.routers import auth, chat
+from app.core.config import settings
 
 app = FastAPI(
-    title="Ultron Learning Assistant API",
-    description="API для регистрации, авторизации и работы чат-бота.",
-    version="0.1.0",
-    docs_url="/api/docs",  # Документация, как в тз
-    redoc_url="/api/redoc",
+    title=settings.PROJECT_NAME,
+    description=settings.DESCRIPTION,
+    version=settings.PROJECT_VERSION,
+    docs_url=settings.DOCS_URL,
+    redoc_url=settings.REDOC_URL,
 )
 
 app.mount("/static", StaticFiles(directory="app/static"), name="static")
 
 templates = Jinja2Templates(directory="app/templates")
 
-# Настройка CORS 
+# Настройка CORS
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],  # Для простоты разработки
+    allow_origins=settings.ALLOWED_ORIGINS,
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],

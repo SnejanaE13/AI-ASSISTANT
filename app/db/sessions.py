@@ -2,12 +2,13 @@ from sqlalchemy.orm import Session
 from . import models, schemas
 from datetime import datetime, timedelta
 import uuid
+from app.core.config import settings
 
-def create_session(db: Session, user_id: int, duration_minutes: int = 60) -> models.Session:
+def create_session(db: Session, user_id: int) -> models.Session:
     session_id = str(uuid.uuid4())
     token = str(uuid.uuid4())
     created_at = datetime.now()
-    expires_at = created_at + timedelta(minutes=duration_minutes)
+    expires_at = created_at + timedelta(minutes=settings.SESSION_DURATION_MINUTES)
     db_session = models.Session(
         session_id=session_id,
         token=token,

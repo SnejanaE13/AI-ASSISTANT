@@ -10,15 +10,15 @@ from app.db import models
 from app.db import schemas
 from app.db.database import get_db
 from app.core.security import get_password_hash, verify_password, get_current_user, auth_header
+from app.core.config import settings
 
 router = APIRouter()
 
 logger = logging.getLogger(__name__)
 
-# Redis setup for login rate limiting. Uses REDIS_URL env var if present.
-REDIS_URL = os.getenv("REDIS_URL", "redis://localhost:6379/0")
+# Redis setup for login rate limiting
 try:
-    redis_client = redis.from_url(REDIS_URL)
+    redis_client = redis.from_url(settings.REDIS_URL)
     # quick health-check
     redis_client.ping()
 except Exception as e:
@@ -84,7 +84,7 @@ def login_for_access_token(user_login: schemas.UserLogin, db: Session = Depends(
                     fails = int(val)
                 except Exception:
                     fails = 0
-                if fails >= 3:
+                if fails >= settings.LOGIN_RATE_LIMIT_ATTEMPTS:
                     try:
                         ttl = redis_client.ttl(key)
                     except RedisError as e:
@@ -122,7 +122,7 @@ def login_for_access_token(user_login: schemas.UserLogin, db: Session = Depends(
             try:
                 new = redis_client.incr(key)
                 if new == 1:
-                    redis_client.expire(key, 300)
+                    redis_client.expire(key, settings.LOGIN_RATE_LIMIT_EXPIRE_SECONDS)
                 logger.info("Failed login attempt for %s (email=%s, ip=%s). Count=%s", key, user_login.email, client_ip, new)
             except RedisError as e:
                 logger.warning("Redis error while incrementing login attempts for %s: %s", key, e)
