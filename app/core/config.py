@@ -23,6 +23,9 @@ class Settings(BaseSettings):
     LOGIN_RATE_LIMIT_ATTEMPTS: int = 3
     LOGIN_RATE_LIMIT_EXPIRE_SECONDS: int = 300
 
+    OLLAMA_BASE_URL: str = "http://localhost:11434"
+    OLLAMA_MODEL: str = "gpt-oss:20b"
+
     class Config:
         env_file = ".env"
         env_file_encoding = "utf-8"

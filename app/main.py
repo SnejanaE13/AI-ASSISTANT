@@ -8,6 +8,8 @@ from app.db.database import Base, engine
 from app.api.routers import auth, chat
 from app.core.config import settings
 
+from app.llm_client import send_prompt
+
 app = FastAPI(
     title=settings.PROJECT_NAME,
     description=settings.DESCRIPTION,
@@ -34,6 +36,13 @@ app.add_middleware(
 @app.on_event("startup")
 def on_startup():
     Base.metadata.create_all(bind=engine)
+
+    # Проверяем подключение к Ollama
+    try:
+        test = send_prompt("ping")
+        print("LLM connected:", test)
+    except Exception as e:
+        print("LLM connection error:", e)
 
 
 app.include_router(auth.router, prefix="/api", tags=["Auth"])

@@ -2,6 +2,8 @@ import requests
 import logging
 import os
 
+from app.core.config import settings 
+
 os.makedirs("logs", exist_ok=True)
 logging.basicConfig(
     filename="logs/llm_requests.log",
@@ -13,9 +15,13 @@ def send_prompt(prompt: str) -> str:
     """Отправка текста пользователем в локальную модель Ollama"""
     try:
         response = requests.post(
-            "http://localhost:11434/api/generate",
-            json={"model": "gpt-oss:20b", "prompt": prompt, "stream": False},
-            timeout=120
+            f"{settings.OLLAMA_BASE_URL}/api/generate",
+            json={
+                "model": settings.OLLAMA_MODEL,
+                "prompt": prompt,
+                "stream": False,
+            },
+            timeout=30,
         )
 
         if response.status_code == 200:
