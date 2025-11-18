@@ -41,6 +41,7 @@ body {
 
 .form-group {
     margin-bottom: 20px;
+    position: relative;
 }
 
 label {
@@ -64,6 +65,47 @@ input:focus {
     border-color: #667eea;
 }
 
+.password-container {
+    position: relative;
+}
+
+.password-container {
+    position: relative;
+}
+
+.password-container input {
+    padding-right: 85px; /* Увеличьте отступ для текста кнопки */
+}
+
+.toggle-password {
+    position: absolute;
+    right: 8px; /* Уменьшите right */
+    top: 50%;
+    transform: translateY(-50%);
+    background: white;
+    border: 1px solid #e1e1e1;
+    cursor: pointer;
+    color: #666;
+    font-size: 12px;
+    z-index: 10;
+    padding: 6px 10px;
+    border-radius: 4px;
+    min-width: 65px; /* Фиксированная ширина */
+    text-align: center;
+    transition: all 0.2s ease;
+}
+
+.toggle-password:hover {
+    background: #f5f5f5;
+    border-color: #667eea;
+}
+.error-message {
+    color: #e74c3c;
+    font-size: 12px;
+    margin-top: 5px;
+    display: none;
+}
+
 .submit-btn {
     width: 100%;
     padding: 14px;
@@ -79,6 +121,12 @@ input:focus {
 
 .submit-btn:hover {
     transform: translateY(-2px);
+}
+
+.submit-btn:disabled {
+    background: #cccccc;
+    cursor: not-allowed;
+    transform: none;
 }
 
 .login-link {
@@ -126,7 +174,6 @@ select option {
     color: #333;
     padding: 10px;
 }
-/* Добавьте в конец css/style.css */
 
 /* Планшеты и маленькие ноутбуки */
 @media (max-width: 1024px) {
@@ -173,37 +220,5 @@ select option {
     
     .form-group {
         margin-bottom: 15px;
-    }
-}
-/* Адаптивность для страницы авторизации */
-@media (max-width: 1024px) {
-    .login-container {
-        max-width: 400px;
-        padding: 30px;
-    }
-}
-
-@media (max-width: 768px) {
-    .login-container {
-        padding: 25px 20px;
-        max-width: 100%;
-    }
-    
-    .login-header h1 {
-        font-size: 24px;
-    }
-}
-
-@media (max-width: 480px) {
-    .login-container {
-        padding: 20px 15px;
-    }
-    
-    .login-header h1 {
-        font-size: 22px;
-    }
-    
-    .login-header p {
-        font-size: 13px;
     }
 }
