@@ -1,10 +1,11 @@
 import requests
 import json
 import time
+import pytest
 
 API_URL = "http://127.0.0.1:8000"
 
-def test_register_user(email, password, first_name, last_name, role):
+def _register_user_helper(email, password, first_name, last_name, role):
     user_data = {
         "email": email,
         "password": password,
@@ -15,45 +16,73 @@ def test_register_user(email, password, first_name, last_name, role):
 
     try:
         response = requests.post(f"{API_URL}/api/register", json=user_data)
-        print(f"Status Code: {response.status_code}")
-        print("Response JSON:")
-        try:
-            print(json.dumps(response.json(), indent=2, ensure_ascii=False))
-        except json.JSONDecodeError:
-            print(response.text)
+        # Optional: print response details for debugging
+        # print(f"Status Code: {response.status_code}")
+        # print("Response JSON:")
+        # try:
+        #     print(json.dumps(response.json(), indent=2, ensure_ascii=False))
+        # except json.JSONDecodeError:
+        #     print(response.text)
+        return response
 
     except requests.exceptions.ConnectionError as e:
         print(f"Connection Error: {e}")
         print("Please make sure the FastAPI server is running.")
+        pytest.fail(f"Could not connect to FastAPI server: {e}")
 
-if __name__ == "__main__":
-    # Генерируем уникальный идентификатор для каждого запуска теста
+
+def test_valid_8_char_password_registration():
     unique_id = int(time.time())
-    
-    print("--- Testing with a valid 9-character password ---")
-    test_register_user(
-        email=f"testuser1_{unique_id}@example.com",
-        password="password1",
+    response = _register_user_helper(
+        email=f"testuser_valid_{unique_id}@example.com",
+        password="password",
         first_name="Тест",
-        last_name="Пользователь1",
+        last_name="Валидный",
         role="student",
     )
+    assert response.status_code == 201
 
-    print("\n--- Testing with a long password (more than 72 characters) ---")
-    long_password = "a" * 73
-    test_register_user(
-        email=f"testuser2_{unique_id}@example.com",
+
+def test_long_password_registration_too_long():
+    unique_id = int(time.time())
+    long_password = "a" * 73  # More than 72 bytes (assuming ASCII)
+    response = _register_user_helper(
+        email=f"testuser_long_{unique_id}@example.com",
         password=long_password,
         first_name="Тест",
-        last_name="Пользователь2",
+        last_name="Длинный",
         role="student",
     )
+    assert response.status_code == 422  # Expect validation error
+    assert "detail" in response.json()
+    assert "Пароль не может превышать 72 байта" in response.json()["detail"][0]["msg"]
 
-    print("\n--- Testing with a 9-character Cyrillic password ---")
-    test_register_user(
-        email=f"testuser3_{unique_id}@example.com",
-        password="пароль123",
+
+def test_cyrillic_password_registration_too_long():
+    unique_id = int(time.time())
+    # Cyrillic characters are multi-byte, 9 Cyrillic chars will be > 72 bytes
+    cyrillic_password_too_long = "приветмирприветмирприветмирприветмирприветмирприветмирприветмирприветмир" # 56 chars, ~112 bytes
+    response = _register_user_helper(
+        email=f"testuser_cyrillic_long_{unique_id}@example.com",
+        password=cyrillic_password_too_long,
         first_name="Тест",
-        last_name="Пользователь3",
+        last_name="Кириллица",
         role="student",
     )
+    assert response.status_code == 422
+    assert "detail" in response.json()
+    assert "Пароль не может превышать 72 байта" in response.json()["detail"][0]["msg"]
+
+
+def test_password_less_than_8_chars():
+    unique_id = int(time.time())
+    response = _register_user_helper(
+        email=f"testuser_short_{unique_id}@example.com",
+        password="short", # 5 characters
+        first_name="Тест",
+        last_name="Короткий",
+        role="student",
+    )
+    assert response.status_code == 422
+    assert "detail" in response.json()
+    assert "String should have at least 8 characters" in response.json()["detail"][0]["msg"]

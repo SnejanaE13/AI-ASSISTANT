@@ -330,3 +330,9 @@
 
 Если сомневаешься, запомни: *tell + человек* → “сообщать кому‑то”. *say* можно использовать без конкретного «кому».
 2025-11-19 12:43:01,247 - INFO - Prompt: ping | Response: pong! 🌟 Need anything else?
+2025-11-23 00:03:19,389 - ERROR - Ошибка Ollama API: {"error":"model 'gpt-oss:20b' not found"}
+2025-11-23 00:04:28,251 - ERROR - Ошибка Ollama API: {"error":"model 'gpt-oss:20b' not found"}
+2025-11-23 00:06:07,337 - ERROR - Ошибка Ollama API: {"error":"model 'gpt-oss:20b' not found"}
+2025-11-23 00:07:04,716 - ERROR - Ошибка Ollama API: {"error":"model 'gpt-oss:20b' not found"}
+2025-11-23 00:07:47,233 - ERROR - Ошибка Ollama API: {"error":"model 'gpt-oss:20b' not found"}
+2025-11-23 00:12:56,301 - ERROR - Ошибка Ollama API: {"error":"model 'gpt-oss:20b' not found"}

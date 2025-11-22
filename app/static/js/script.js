@@ -26,8 +26,8 @@ document.addEventListener("DOMContentLoaded", function () {
         const confirmPassword = confirmPasswordInput.value;
         let isValid = true;
 
-        if (password.length < 9) {
-            passwordError.textContent = "Пароль должен содержать не менее 9 символов.";
+        if (password.length < 8) {
+            passwordError.textContent = "Пароль должен содержать не менее 8 символов.";
             isValid = false;
         } else {
             passwordError.textContent = "";

@@ -8,8 +8,8 @@ class UserRole(str, Enum):
 
 class UserCreate(BaseModel):
     email: EmailStr
-    # Пароль должен быть >= 9 символов, как в script.js
-    password: constr(min_length=9)
+    # Пароль должен быть >= 8 символов
+    password: constr(min_length=8)
     first_name: str
     last_name: str
     second_name: Optional[str] = None

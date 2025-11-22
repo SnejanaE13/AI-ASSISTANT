@@ -17,3 +17,6 @@ venv/
 
 # db
 ai_assistant_database.db
+
+# logs
+*.log
