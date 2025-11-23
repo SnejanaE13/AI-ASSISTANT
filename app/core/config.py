@@ -26,8 +26,13 @@ class Settings(BaseSettings):
     OLLAMA_BASE_URL: str = "http://localhost:11434"
     OLLAMA_MODEL: str = "gpt-oss:20b"
 
+    OPENROUTER_BASE_URL: str = "https://openrouter.ai/api/v1"
+    OPENROUTER_MODEL: str = "x-ai/grok-4.1-fast"
+    OPENROUTER_API_KEY: str = ""
+    USE_OPENROUTER: bool = False
+
     class Config:
-        env_file = ".env"
+        env_file = [".env", ".env.openrouter", ".env.openrouter.local"]
         env_file_encoding = "utf-8"
 
 settings = Settings()

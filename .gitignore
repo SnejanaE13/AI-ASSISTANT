@@ -20,3 +20,6 @@ ai_assistant_database.db
 
 # logs
 *.log
+
+# Env files
+.env.openrouter.local

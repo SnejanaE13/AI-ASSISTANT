@@ -594,19 +594,11 @@
                             <div class="chat-title">Ultron Assistant</div>
                         </div>
                         <div class="chat-messages" id="chat-messages">
-                            <div class="message ai">
-                                Привет! Я твой помощник в изучении английского. Чем могу помочь сегодня?
-                            </div>
-                            <div class="message user">
-                                Мне нужно подготовиться к тесту по временам Perfect.
-                            </div>
-                            <div class="message ai">
-                                Отлично! Давай начнём с краткого повторения. Present Perfect используется для действий, которые произошли в неопределённое время в прошлом или имеют связь с настоящим. Пример: "I have visited London three times."
-                            </div>
+                            <!-- Chat messages will be dynamically loaded here -->
                         </div>
                         <div class="chat-input-container">
                             <input type="text" class="chat-input" placeholder="Напишите ваш вопрос...">
-                            <button class="btn">Отправить</button>
+                            <button class="btn" onclick="sendMessage()">Отправить</button>
                         </div>
                         <div class="quick-actions">
                             <div class="quick-action">Объясни грамматику</div>

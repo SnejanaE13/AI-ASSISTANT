@@ -12,6 +12,10 @@ from anyio import to_thread
 router = APIRouter()
 
 def ensure_session_active(db: Session, current_user: models.User, token: str) -> models.Session:
+    # Strip "Bearer " prefix if present
+    if token.startswith("Bearer "):
+        token = token.split(" ")[1]
+
     now = datetime.now(timezone.utc)
 
     session_obj = (
@@ -101,13 +105,6 @@ async def chat_endpoint(
     if not response_text or response_text.strip() == "":
         response_text = "Модель вернула пустой ответ."
 
-    if response_text.startswith("Ошибка:") or response_text.startswith("Произошла непредвиденная ошибка"):
-        # наш llm_client вернул текст ошибки
-        raise HTTPException(
-            status_code=503,
-            detail="Сервис генерации ответа временно недоступен. Попробуйте позже.",
-        )
-
 
     # 3. Сохраняем ответ AI
     save_message(
@@ -125,24 +122,23 @@ async def chat_endpoint(
 
 @router.get("/chat/history")
 async def chat_history(
-    db: Session = Depends(get_db), current_user: models.User = Depends(get_current_user)
+    db: Session = Depends(get_db),
+    current_user: models.User = Depends(get_current_user),
+    token: str = Depends(auth_header)
 ):
     """
     Возвращает историю чата.
     """
-    history = get_chat_history_from_db(db=db, session_id=current_user.sessions[-1].session_id)
+    session_obj = ensure_session_active(db, current_user, token)
+    history = get_chat_history_from_db(db=db, session_id=session_obj.session_id)
 
-    # Разворачиваем, чтобы были от старых к новым
+
+
+    # Разворачиваем, чтобы были от старых к новым (старые сверху)
     history.reverse()
 
     if not history:
-        return [
-            {
-                "sender_type": "ai",
-                "content": "Привет! Это начало вашей истории чата.",
-                "timestamp": datetime.utcnow(),
-            }
-        ]
+        return []
 
     return [
         {

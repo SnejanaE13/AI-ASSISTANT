@@ -18,7 +18,10 @@ document.addEventListener('DOMContentLoaded', function() {
 // Инициализация приложения
 function initializeApp() {
     // ПОКАЗЫВАЕМ переключатель
-    document.getElementById('user-switcher').style.display = 'flex';
+    const userSwitcher = document.getElementById('user-switcher');
+    if (userSwitcher) {
+        userSwitcher.style.display = 'flex';
+    }
     
     // Получаем статус из localStorage (по умолчанию студент)
     const userStatus = localStorage.getItem('userStatus') || 'student';
@@ -84,7 +87,9 @@ function switchScreen(userType, screenName, event) {
 // Инициализация экранов студента
 function initStudentScreen(screenName) {
     console.log('Инициализация экрана студента:', screenName);
-    // Здесь можно добавить специфичную логику для каждого экрана
+    if (screenName === 'assistant') {
+        loadStudentChatHistory();
+    }
 }
 
 // Инициализация экранов преподавателя
@@ -236,6 +241,75 @@ function initCommonEventHandlers() {
             // Дополнительные действия при клике на карточку
         });
     });
+}
+
+async function loadStudentChatHistory() {
+    const chatMessages = document.getElementById('chat-messages');
+    chatMessages.innerHTML = ''; // Clear existing messages
+
+    try {
+        const response = await fetchWithAuth('/api/chat/history', { method: 'GET' });
+        const history = await response.json();
+
+        if (history.length === 0) {
+            const welcomeMessageElement = document.createElement('div');
+            welcomeMessageElement.classList.add('message', 'ai');
+            welcomeMessageElement.textContent = 'Привет! Я твой помощник в изучении английского. Чем могу помочь сегодня?';
+            chatMessages.appendChild(welcomeMessageElement);
+        } else {
+            history.forEach(message => {
+                const messageElement = document.createElement('div');
+                messageElement.classList.add('message', message.sender_type);
+                messageElement.textContent = message.content;
+                chatMessages.appendChild(messageElement);
+            });
+        }
+    } catch (error) {
+        console.error('Error loading chat history:', error);
+        const errorMessageElement = document.createElement('div');
+        errorMessageElement.classList.add('message', 'ai', 'error');
+        errorMessageElement.textContent = 'Sorry, something went wrong while loading the chat history.';
+        chatMessages.appendChild(errorMessageElement);
+    }
+}
+
+async function sendMessage() {
+    const chatInput = document.querySelector('#student-assistant .chat-input');
+    const message = chatInput.value.trim();
+
+    if (!message) return;
+
+    const chatMessages = document.getElementById('chat-messages');
+
+    // Add user message to chat
+    const userMessageElement = document.createElement('div');
+    userMessageElement.classList.add('message', 'user');
+    userMessageElement.textContent = message;
+    chatMessages.appendChild(userMessageElement);
+
+    chatInput.value = '';
+
+    try {
+        const response = await fetchWithAuth('/api/chat', {
+            method: 'POST',
+            body: JSON.stringify({ content: message }),
+        });
+
+        const data = await response.json();
+        const aiMessage = data.content;
+
+        // Add AI message to chat
+        const aiMessageElement = document.createElement('div');
+        aiMessageElement.classList.add('message', 'ai');
+        aiMessageElement.textContent = aiMessage;
+        chatMessages.appendChild(aiMessageElement);
+    } catch (error) {
+        console.error('Error sending message:', error);
+        const errorMessageElement = document.createElement('div');
+        errorMessageElement.classList.add('message', 'ai', 'error');
+        errorMessageElement.textContent = 'Sorry, something went wrong.';
+        chatMessages.appendChild(errorMessageElement);
+    }
 }
 
 // Инициализация общих обработчиков

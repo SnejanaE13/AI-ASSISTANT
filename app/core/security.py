@@ -29,11 +29,15 @@ def get_password_hash(password: str) -> str:
 async def get_current_user(
     token: str = Depends(auth_header), db: Session = Depends(get_db)
 ):
-    if token is None:
+    if not token:
         raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED,
             detail="Authorization token is missing",
         )
+
+    # Strip "Bearer " prefix if present
+    if token.startswith("Bearer "):
+        token = token.split(" ")[1]
 
     session = (
         db.query(models.Session)
