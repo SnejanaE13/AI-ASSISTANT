@@ -1,0 +1,1 @@
+Работайте в app/templates и app/static

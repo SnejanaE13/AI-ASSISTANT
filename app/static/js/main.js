@@ -42,12 +42,13 @@ function switchScreen(userType, screenName, event) {
     const screens = document.querySelectorAll(`#${userType}-interface .screen`);
     screens.forEach(screen => {
         screen.classList.remove('active');
+        screen.classList.remove('screen-slide-left', 'screen-slide-right');
     });
     
     // Показать выбранный экран
     const targetScreen = document.getElementById(`${userType}-${screenName}`);
     if (targetScreen) {
-        targetScreen.classList.add('active');
+        targetScreen.classList.add('active', 'screen-slide-left');
         console.log('Экран показан:', targetScreen.id);
     } else {
         console.error('Экран не найден:', `${userType}-${screenName}`);

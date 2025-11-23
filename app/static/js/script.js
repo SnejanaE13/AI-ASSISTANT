@@ -20,8 +20,65 @@ document.addEventListener("DOMContentLoaded", function () {
     function hideMessage() {
         messageDisplay.style.display = "none";
     }
+    function validatePassword(password) {
+        if (password.length < 8) {
+            return {
+                valid: false,
+                message: 'Пароль должен содержать не менее 8 символов'
+            };
+        }
+        
+        if (!/^[A-Za-z0-9!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]*$/.test(password)) {
+            return {
+                valid: false,
+                message: 'Пароль должен содержать только латинские буквы, цифры и специальные символы'
+            };
+        }
+        
+        return { valid: true, message: '' };
+    }
+    
+    // Функция для проверки совпадения паролей
+    function validatePasswordMatch(password, confirmPassword) {
+        if (!confirmPassword) {
+            return { valid: false, message: 'Подтвердите пароль' };
+        }
+        
+        if (password !== confirmPassword) {
+            return { valid: false, message: 'Пароли не совпадают' };
+        }
+        
+        return { valid: true, message: '' };
+    }
+    
+    // Новая функция для отображения ошибок
+    function showError(input, errorElement, message, isError = true) {
+        if (isError) {
+            errorElement.textContent = message;
+            errorElement.style.display = 'block';
+            input.style.borderColor = '#e74c3c';
+            input.style.backgroundColor = '#fdf2f2';
+        } else {
+            errorElement.style.display = 'none';
+            input.style.borderColor = '#27ae60';
+            input.style.backgroundColor = '#f2fdf2';
+        }
+    }
 
-    function validatePassword() {
+    function updateSubmitButton() {
+        const passwordValidation = validatePassword(passwordInput.value);
+        const matchValidation = validatePasswordMatch(passwordInput.value, confirmPasswordInput.value);
+        
+        const isValid = passwordValidation.valid && 
+                    matchValidation.valid && 
+                    passwordInput.value && 
+                    confirmPasswordInput.value;
+        
+        submitBtn.disabled = !isValid;
+        submitBtn.classList.toggle('btn-disabled', !isValid);
+    }
+
+    function validatePasswordBeforeSubmit() {
         const password = passwordInput.value;
         const confirmPassword = confirmPasswordInput.value;
         let isValid = true;
@@ -64,8 +121,17 @@ document.addEventListener("DOMContentLoaded", function () {
     form.addEventListener("submit", async function (e) {
         e.preventDefault();
         hideMessage();
+        const passwordValidation = validatePassword(passwordInput.value);
+        const matchValidation = validatePasswordMatch(passwordInput.value, confirmPasswordInput.value);
 
-        if (!validatePassword()) {
+        if (!passwordValidation.valid || !matchValidation.valid) {
+            // Показываем ошибки, если они есть
+            if (!passwordValidation.valid) {
+                showError(passwordInput, passwordError, passwordValidation.message, true);
+            }
+            if (!matchValidation.valid) {
+                showError(confirmPasswordInput, confirmPasswordError, matchValidation.message, true);
+            }
             return;
         }
 

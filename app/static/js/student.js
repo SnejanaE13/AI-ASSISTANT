@@ -152,3 +152,21 @@ function addMessageToChatDOM(text, type) {
   chatMessages.scrollTop = chatMessages.scrollHeight;
   return messageEl;
 }
+function generateStudentAIResponse(message) {
+    const responses = {
+        'грамматик': 'Давайте разберем правила грамматики. Какая конкретно тема вас интересует?',
+        'произношени': 'Для улучшения произношения рекомендую практиковать фонетические упражнения. Хотите попробовать?',
+        'диалог': 'Отлично! Давайте начнем диалог. Выберите тему: путешествия, работа, технологии или хобби.',
+        'домашн': 'С удовольствием помогу с домашним заданием. Какой предмет или задание вызывает затруднения?',
+        'тест': 'Для подготовки к тесту рекомендую повторить следующие темы: времена, модальные глаголы, условные предложения.',
+        'default': 'Интересный вопрос! Я могу помочь с грамматикой, произношением, подготовкой к тестам или практикой диалогов. Что именно вас интересует?'
+    };
+    
+    const lowerMessage = message.toLowerCase();
+    for (const [key, response] of Object.entries(responses)) {
+        if (lowerMessage.includes(key)) {
+            return response;
+        }
+    }
+    return responses.default;
+}
