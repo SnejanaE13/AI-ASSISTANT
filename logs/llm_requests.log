@@ -339,3 +339,4 @@
 2025-11-23 13:14:29,895 - ERROR - Ошибка Ollama API: {"error":"model 'gpt-oss:20b' not found"}
 2025-11-23 13:16:57,407 - ERROR - Ошибка Ollama API: {"error":"model 'gpt-oss:20b' not found"}
 2025-11-23 13:23:10,774 - ERROR - Ошибка Ollama API: {"error":"model 'gpt-oss:20b' not found"}
+2025-11-23 15:17:34,456 - ERROR - Ошибка Ollama API: {"error":"model 'gpt-oss:20b' not found"}

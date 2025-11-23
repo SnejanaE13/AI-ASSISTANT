@@ -2,7 +2,13 @@
 
 // Инициализация при загрузке страницы
 document.addEventListener('DOMContentLoaded', function() {
-    // СРАЗУ показываем интерфейс
+    // Check authentication
+    if (!localStorage.getItem('session_token')) {
+        window.location.href = '/login';
+        return;
+    }
+    
+    // Show interface
     document.getElementById('app-interface').style.display = 'block';
     
     createParticles();
@@ -111,9 +117,19 @@ function showStudentInterface() {
 }
 
 // Функция выхода
-function logout() {
+async function logout() {
     if (confirm('Вы уверены, что хотите выйти?')) {
-        window.location.href = 'login.html';
+        try {
+            const token = localStorage.getItem('session_token');
+            if (token) {
+                await fetchWithAuth('/api/logout', { method: 'POST' });
+            }
+        } catch (error) {
+            console.warn('Logout API call failed:', error);
+        }
+        localStorage.removeItem('session_token');
+        localStorage.removeItem('userStatus');
+        window.location.href = '/login';
     }
 }
 
@@ -177,6 +193,25 @@ const AppUtils = {
         }
     }
 };
+
+async function fetchWithAuth(url, options = {}) {
+    const token = localStorage.getItem('session_token');
+    const headers = {
+        'Content-Type': 'application/json',
+        ...(options.headers || {}),
+    };
+    if (token) {
+        headers['Authorization'] = `Bearer ${token}`;
+    }
+    const response = await fetch(url, {
+        ...options,
+        headers,
+    });
+    if (!response.ok) {
+        throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+    }
+    return response;
+}
 
 // Глобальные обработчики событий
 document.addEventListener('keydown', function(e) {
