@@ -1,4 +1,10 @@
 document.addEventListener("DOMContentLoaded", function () {
+    // Check if already authenticated
+    if (localStorage.getItem("session_token")) {
+        window.location.href = "/main";
+        return;
+    }
+  
   console.log("Страница авторизации загружена и готова!");
 
   const form = document.getElementById("loginForm");

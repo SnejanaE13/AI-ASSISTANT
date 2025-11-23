@@ -11,6 +11,11 @@ document.addEventListener("DOMContentLoaded", function () {
 
     const API_URL = "http://127.0.0.1:8000";
 
+    if (localStorage.getItem("session_token")) {
+        window.location.href = "/main";
+        return;
+    }
+
     function showMessage(message, isError = true) {
         messageDisplay.textContent = message;
         messageDisplay.className = isError ? "message-display error" : "message-display success";
