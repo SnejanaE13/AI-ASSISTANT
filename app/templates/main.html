@@ -26,13 +26,13 @@
             <div id="student-interface" class="interface-container active">
                 <!-- Навигация студента -->
                 <nav class="navigation">
-                    <div class="nav-item active" onclick="switchScreen('student', 'dashboard', event)">🏠 Главная</div>
-                    <div class="nav-item" onclick="switchScreen('student', 'learning', event)">📚 Обучение</div>
-                    <div class="nav-item" onclick="switchScreen('student', 'progress', event)">📊 Прогресс</div>
-                    <div class="nav-item" onclick="switchScreen('student', 'assignments', event)">📝 Задания</div>
-                    <div class="nav-item" onclick="switchScreen('student', 'analysis', event)">🔍 Анализ</div>
-                    <div class="nav-item" onclick="switchScreen('student', 'schedule', event)">⏰ Расписание</div>
-                    <div class="nav-item" onclick="switchScreen('student', 'assistant', event)">🤖 Ассистент</div>
+                    <div class="nav-item active" onclick="switchScreenWithState('student', 'dashboard', event)">🏠 Главная</div>
+                    <div class="nav-item" onclick="switchScreenWithState('student', 'learning', event)">📚 Обучение</div>
+                    <div class="nav-item" onclick="switchScreenWithState('student', 'progress', event)">📊 Прогресс</div>
+                    <div class="nav-item" onclick="switchScreenWithState('student', 'assignments', event)">📝 Задания</div>
+                    <div class="nav-item" onclick="switchScreenWithState('student', 'analysis', event)">🔍 Анализ</div>
+                    <div class="nav-item" onclick="switchScreenWithState('student', 'schedule', event)">⏰ Расписание</div>
+                    <div class="nav-item" onclick="switchScreenWithState('student', 'assistant', event)">🤖 Ассистент</div>
                 </nav>
 
                 <!-- Главная панель студента -->
@@ -614,13 +614,13 @@
             <div id="teacher-interface" class="interface-container">
                 <!-- Навигация преподавателя -->
                 <nav class="navigation">
-                    <div class="nav-item active" onclick="switchScreen('teacher', 'dashboard', event)">🏠 Главная</div>
-                    <div class="nav-item" onclick="switchScreen('teacher', 'students', event)">👥 Студенты</div>
-                    <div class="nav-item" onclick="switchScreen('teacher', 'assignments', event)">📝 Задания</div>
-                    <div class="nav-item" onclick="switchScreen('teacher', 'analysis', event)">📊 Аналитика</div>
-                    <div class="nav-item" onclick="switchScreen('teacher', 'content', event)">📚 Контент</div>
-                    <div class="nav-item" onclick="switchScreen('teacher', 'schedule', event)">⏰ Расписание</div>
-                    <div class="nav-item" onclick="switchScreen('teacher', 'assistant', event)">🤖 Ассистент</div>
+                    <div class="nav-item active" onclick="switchScreenWithState('teacher', 'dashboard', event)">🏠 Главная</div>
+                    <div class="nav-item" onclick="switchScreenWithState('teacher', 'students', event)">👥 Студенты</div>
+                    <div class="nav-item" onclick="switchScreenWithState('teacher', 'assignments', event)">📝 Задания</div>
+                    <div class="nav-item" onclick="switchScreenWithState('teacher', 'analysis', event)">📊 Аналитика</div>
+                    <div class="nav-item" onclick="switchScreenWithState('teacher', 'content', event)">📚 Контент</div>
+                    <div class="nav-item" onclick="switchScreenWithState('teacher', 'schedule', event)">⏰ Расписание</div>
+                    <div class="nav-item" onclick="switchScreenWithState('teacher', 'assistant', event)">🤖 Ассистент</div>
                 </nav>
 
                 <!-- Главная панель преподавателя -->
