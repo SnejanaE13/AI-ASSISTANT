@@ -6,6 +6,7 @@ from fastapi.responses import HTMLResponse
 
 from app.db.database import Base, engine
 from app.api.routers import auth, chat
+from app.api.routers import states
 from app.core.config import settings
 
 from app.llm_client import send_prompt
@@ -47,6 +48,7 @@ def on_startup():
 
 app.include_router(auth.router, prefix="/api", tags=["Auth"])
 app.include_router(chat.router, prefix="/api", tags=["Chat"])
+app.include_router(states.router, prefix="/api", tags=["States"])
 
 @app.get("/", response_class=HTMLResponse)
 async def read_root(request: Request):

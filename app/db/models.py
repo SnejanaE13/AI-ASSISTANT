@@ -6,6 +6,7 @@ from sqlalchemy import (
     Boolean,
     ForeignKey,
     Text,
+    UniqueConstraint
 )
 from sqlalchemy.orm import relationship
 from datetime import datetime, timezone
@@ -59,3 +60,19 @@ class Prompt(Base):
     created_at = Column(DateTime, default=lambda: datetime.now(timezone.utc))
     is_active = Column(Boolean, default=True)
     messages = relationship("Message", back_populates="prompt")
+
+ # НОВАЯ МОДЕЛЬ: Сохранение состояний экранов пользователя
+class UserScreenState(Base):
+     __tablename__ = "user_screen_state"
+     
+     state_id = Column(Integer, primary_key=True, index=True)
+     user_id = Column(Integer, ForeignKey("user.user_id"), nullable=False)
+     screen_name = Column(String(50), nullable=False)  # Например: 'student-dashboard', 'teacher-analysis'
+     state_data = Column(Text, nullable=False)  # JSON данные состояния
+     last_updated = Column(DateTime, default=lambda: datetime.now(timezone.utc))
+     
+     # Связь с пользователем
+     user = relationship("User")
+ 
+     # Уникальный индекс: один пользователь - одно состояние на экран
+     __table_args__ = (UniqueConstraint('user_id', 'screen_name', name='uq_user_screen'),)

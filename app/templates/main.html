@@ -1261,5 +1261,123 @@
     <script src="/static/js/student.js"></script>
     <script src="/static/js/teacher.js"></script>
     <script src="/static/js/main.js"></script>
+
+    <!-- НОВЫЙ СКРИПТ: Управление состояниями экранов -->
+    <script>
+    // Глобальный объект для хранения текущих состояний
+    window.screenStates = {};
+    
+    // Функция переключения экранов с сохранением состояния
+    async function switchScreenWithState(role, screenName, event) {
+        // Сохраняем состояние текущего экрана
+        await saveCurrentScreenState();
+        
+        // Вызываем оригинальную функцию переключения
+        switchScreen(role, screenName, event);
+        
+        // Загружаем состояние нового экрана
+        await loadScreenState(screenName);
+    }
+    
+    // Сохранить состояние текущего экрана
+    async function saveCurrentScreenState() {
+        const activeScreen = document.querySelector('.screen.active');
+        if (!activeScreen) return;
+        
+        const screenName = activeScreen.id;
+        const stateData = collectScreenState(screenName);
+        
+        try {
+            const response = await fetch(`/api/state/${screenName}`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(stateData)
+            });
+            
+            const result = await response.json();
+            console.log('Состояние сохранено:', result);
+        } catch (error) {
+            console.error('Ошибка сохранения состояния:', error);
+        }
+    }
+    
+    // Загрузить состояние экрана
+    async function loadScreenState(screenName) {
+        try {
+            const response = await fetch(`/api/state/${screenName}`);
+            const result = await response.json();
+            
+            if (result.success && result.state_data) {
+                applyScreenState(screenName, result.state_data);
+            }
+        } catch (error) {
+            console.error('Ошибка загрузки состояния:', error);
+        }
+    }
+    
+    // Собрать данные состояния с экрана
+    function collectScreenState(screenName) {
+        const state = {};
+        const screen = document.getElementById(screenName);
+        
+        if (!screen) return state;
+        
+        // Собираем значения полей ввода
+        const inputs = screen.querySelectorAll('input, textarea, select');
+        inputs.forEach(input => {
+            if (input.id) {
+                state[input.id] = input.value;
+            }
+        });
+        
+        // Сохраняем активные элементы
+        const activeElements = screen.querySelectorAll('.active, .selected');
+        state.activeElements = Array.from(activeElements).map(el => el.id || el.className);
+        
+        return state;
+    }
+    
+    // Применить сохраненное состояние к экрану
+    function applyScreenState(screenName, stateData) {
+        const screen = document.getElementById(screenName);
+        if (!screen) return;
+        
+        // Восстанавливаем значения полей
+        Object.keys(stateData).forEach(key => {
+            if (key !== 'activeElements') {
+                const element = screen.querySelector(`#${key}`);
+                if (element && (element.tagName === 'INPUT' || element.tagName === 'TEXTAREA' || element.tagName === 'SELECT')) {
+                    element.value = stateData[key];
+                }
+            }
+        });
+        
+        console.log(`Состояние восстановлено для экрана: ${screenName}`);
+    }
+    
+    // Обновляем навигацию для использования новой функции
+    document.addEventListener('DOMContentLoaded', function() {
+        // Заменяем обработчики навигации
+        const navItems = document.querySelectorAll('.nav-item');
+        navItems.forEach(item => {
+            const originalOnClick = item.getAttribute('onclick');
+            if (originalOnClick && originalOnClick.includes('switchScreen')) {
+                // Заменяем вызов switchScreen на switchScreenWithState
+                const newOnClick = originalOnClick.replace('switchScreen', 'switchScreenWithState');
+                item.setAttribute('onclick', newOnClick);
+            }
+        });
+        
+        // Загружаем состояние при старте
+        const activeScreen = document.querySelector('.screen.active');
+        if (activeScreen) {
+            loadScreenState(activeScreen.id);
+        }
+    });
+    </script>
+    
+
 </body>
 </html>
