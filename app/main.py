@@ -2,12 +2,13 @@ from fastapi import FastAPI, Request
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.staticfiles import StaticFiles
 from fastapi.templating import Jinja2Templates
-from fastapi.responses import HTMLResponse
+from fastapi.responses import HTMLResponse, RedirectResponse
 
 from app.db.database import Base, engine
 from app.api.routers import auth, chat
 from app.api.routers import states
 from app.core.config import settings
+
 
 from app.llm_client import send_prompt
 
@@ -31,6 +32,22 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
+
+@app.middleware("http")
+async def check_authentication(request: Request, call_next):
+    public_paths = ["/", "/login", "/static", "/docs", "/redoc", "/api/auth"]
+    
+    if any(request.url.path.startswith(path) for path in public_paths):
+        return await call_next(request)
+    
+    session_token = request.cookies.get("session_token")
+    auth_header = request.headers.get("authorization")
+    
+    if not session_token and not auth_header:
+        return RedirectResponse(url="/login")
+    
+    response = await call_next(request)
+    return response
 
 
 # Создание таблиц при старте
